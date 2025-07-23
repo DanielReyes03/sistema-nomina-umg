@@ -37,7 +37,8 @@ public class LoginController {
             // Si no hay usuarios, permite login solo con admin/admin
             loginBoton.setOnAction(event -> handleLogin());
         } catch (Exception e) {
-            mostrarAlerta("Error", "No se pudo conectar a la base de datos.");
+            System.out.println("Error al conectar a la base de datos: " + e.getMessage());
+            // mostrarAlerta("Error", "No se pudo conectar a la base de datos.");
         }
     }
 

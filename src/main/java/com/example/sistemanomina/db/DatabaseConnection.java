@@ -10,7 +10,7 @@ public class DatabaseConnection {
     private Connection connection;
 
     // Cambia estos valores según tu configuración
-    private final String url = "jdbc:mysql://localhost:3306/db_nomina?useSSL=false&serverTimezone=UTC";
+    private final String url = "jdbc:mysql://localhost:3306/db_nomina";
     private final String username = "usuario_nomina";
     private final String password = "clave_nomina";
 
