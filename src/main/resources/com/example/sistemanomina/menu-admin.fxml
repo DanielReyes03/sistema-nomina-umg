@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.text.*?>
 
@@ -17,44 +18,84 @@
          <Font name="System Bold" size="35.0" />
       </font>
    </Text>
-   <Button fx:id="btnUsuarios" layoutX="30.0" layoutY="100.0" mnemonicParsing="false" style="-fx-background-color: #A8D5BA;" text="Usuarios">
+   <Button fx:id="btnUsuarios" layoutX="15.0" layoutY="100.0" mnemonicParsing="false" style="-fx-background-color: #A8D5BA;" text="Usuarios">
       <font>
          <Font name="System Bold" size="20.0" />
       </font>
    </Button>
-   <Button fx:id="btnEmpleados" layoutX="30.0" layoutY="150.0" mnemonicParsing="false" style="-fx-background-color: #A8D5BA;" text="Empleados">
+   <Button fx:id="btnEmpleados" layoutX="15.0" layoutY="150.0" mnemonicParsing="false" style="-fx-background-color: #A8D5BA;" text="Empleados">
       <font>
          <Font name="System Bold" size="20.0" />
       </font>
    </Button>
-   <Button fx:id="btnAsistencia" layoutX="30.0" layoutY="200.0" mnemonicParsing="false" style="-fx-background-color: #A8D5BA;" text="Asistencia">
+   <Button fx:id="btnAsistencia" layoutX="15.0" layoutY="200.0" mnemonicParsing="false" style="-fx-background-color: #A8D5BA;" text="Asistencia">
       <font>
          <Font name="System Bold" size="20.0" />
       </font>
    </Button>
-   <Button fx:id="btnVacaciones" layoutX="30.0" layoutY="250.0" mnemonicParsing="false" style="-fx-background-color: #A8D5BA;" text="Vacaciones">
+   <Button fx:id="btnVacaciones" layoutX="15.0" layoutY="250.0" mnemonicParsing="false" style="-fx-background-color: #A8D5BA;" text="Vacaciones">
       <font>
          <Font name="System Bold" size="20.0" />
       </font>
    </Button>
-   <Button fx:id="btnHorasExtra" layoutX="30.0" layoutY="300.0" mnemonicParsing="false" style="-fx-background-color: #A8D5BA;" text="Horas Extra">
+   <Button fx:id="btnHorasExtra" layoutX="15.0" layoutY="300.0" mnemonicParsing="false" style="-fx-background-color: #A8D5BA;" text="Horas Extra">
       <font>
          <Font name="System Bold" size="20.0" />
       </font>
    </Button>
-   <Button fx:id="btnAnticipos" layoutX="30.0" layoutY="350.0" mnemonicParsing="false" style="-fx-background-color: #A8D5BA;" text="Anticipos">
+   <Button fx:id="btnAnticipos" layoutX="15.0" layoutY="350.0" mnemonicParsing="false" style="-fx-background-color: #A8D5BA;" text="Anticipos">
       <font>
          <Font name="System Bold" size="20.0" />
       </font>
    </Button>
-   <Button fx:id="btnPlanilla" layoutX="30.0" layoutY="400.0" mnemonicParsing="false" style="-fx-background-color: #A8D5BA;" text="Planilla">
+   <Button fx:id="btnPlanilla" layoutX="15.0" layoutY="400.0" mnemonicParsing="false" style="-fx-background-color: #A8D5BA;" text="Planilla">
       <font>
          <Font name="System Bold" size="20.0" />
       </font>
    </Button>
-   <Button fx:id="btnPlanilla1" layoutX="30.0" layoutY="450.0" mnemonicParsing="false" style="-fx-background-color: #A8D5BA;" text="Reporteria">
+   <Button fx:id="btnPlanilla1" layoutX="15.0" layoutY="450.0" mnemonicParsing="false" style="-fx-background-color: #A8D5BA;" text="Reporteria">
       <font>
          <Font name="System Bold" size="20.0" />
       </font>
    </Button>
+   <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true" x="140.0" y="100.0">
+      <image>
+         <Image url="@../../../static/usuarios.png" />
+      </image>
+   </ImageView>
+   <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="10.0" layoutY="10.0" pickOnBounds="true" preserveRatio="true" x="130.0" y="140.0">
+      <image>
+         <Image url="@../../../static/empleados.png" />
+      </image>
+   </ImageView>
+   <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="20.0" layoutY="20.0" pickOnBounds="true" preserveRatio="true" x="120.0" y="182.0">
+      <image>
+         <Image url="@../../../static/asistencia.png" />
+      </image>
+   </ImageView>
+   <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="30.0" layoutY="30.0" pickOnBounds="true" preserveRatio="true" x="110.0" y="225.0">
+      <image>
+         <Image url="@../../../static/vacaciones.png" />
+      </image>
+   </ImageView>
+   <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="40.0" layoutY="40.0" pickOnBounds="true" preserveRatio="true" x="100.0" y="269.0">
+      <image>
+         <Image url="@../../../static/HorasExtra.png" />
+      </image>
+   </ImageView>
+   <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="50.0" layoutY="50.0" pickOnBounds="true" preserveRatio="true" x="90.0" y="300.0">
+      <image>
+         <Image url="@../../../static/Anticipos.png" />
+      </image>
+   </ImageView>
+   <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="60.0" layoutY="60.0" pickOnBounds="true" preserveRatio="true" x="80.0" y="341.0">
+      <image>
+         <Image url="@../../../static/Planilla.png" />
+      </image>
+   </ImageView>
+   <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="70.0" layoutY="70.0" pickOnBounds="true" preserveRatio="true" x="70.0" y="381.0">
+      <image>
+         <Image url="@../../../static/reporteria.png" />
+      </image>
+   </ImageView>
 </AnchorPane>
