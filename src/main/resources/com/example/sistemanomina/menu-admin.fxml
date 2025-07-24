@@ -98,4 +98,24 @@
          <Image url="@../../../static/reporteria.png" />
       </image>
    </ImageView>
+   <Button fx:id="btnDepartamentos" layoutX="15.0" layoutY="500.0" mnemonicParsing="false" style="-fx-background-color: #A8D5BA;" text="Departa.">
+      <font>
+         <Font name="System Bold" size="20.0" />
+      </font>
+   </Button>
+   <Button fx:id="btnPuestos" layoutX="15.0" layoutY="550.0" mnemonicParsing="false" style="-fx-background-color: #A8D5BA;" text="Puestos">
+      <font>
+         <Font name="System Bold" size="20.0" />
+      </font>
+   </Button>
+   <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="80.0" layoutY="80.0" pickOnBounds="true" preserveRatio="true" x="60.0" y="420.0">
+      <image>
+         <Image url="@../../../static/departamentos.png" />
+      </image>
+   </ImageView>
+   <ImageView fitHeight="40.0" fitWidth="40.0" layoutX="90.0" layoutY="90.0" pickOnBounds="true" preserveRatio="true" x="50.0" y="456.0">
+      <image>
+         <Image url="@../../../static/puestos.png" />
+      </image>
+   </ImageView>
 </AnchorPane>
