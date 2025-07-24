@@ -1,3 +1,4 @@
+DROP DATABASE IF EXISTS db_nomina;
 CREATE DATABASE IF NOT EXISTS db_nomina;
 USE db_nomina;
 
@@ -35,6 +36,17 @@ CREATE TABLE `usuarios` (
     `rol` varchar(255) NOT NULL,
     `empleado_id` integer,
     `estado` boolean
+);
+
+-- Tabla de anticipos
+CREATE TABLE `anticipos` (
+     `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
+     `empleado_id` INTEGER,
+     `monto` DECIMAL(10,2),
+     `fecha` DATE,
+     `motivo` VARCHAR(255),
+     `saldo_pendiente` DECIMAL(10,2),
+     FOREIGN KEY (`empleado_id`) REFERENCES `empleados` (`id`)
 );
 
 CREATE TABLE `asistencias` (
@@ -81,23 +93,30 @@ CREATE TABLE `prestamos` (
     `saldo_pendiente` decimal
 );
 
-CREATE TABLE `nominas` (
+CREATE TABLE `nomina` (
     `id` integer PRIMARY KEY AUTO_INCREMENT,
     `periodo_inicio` date,
     `periodo_fin` date,
-    `fecha_generacion` date,
-    `tipo` varchar(255)
+    `fecha_generacion` date
 );
 
-CREATE TABLE `recibos` (
-    `id` integer PRIMARY KEY AUTO_INCREMENT,
-    `nomina_id` integer,
-    `empleado_id` integer,
-    `sueldo_base` decimal,
-    `horas_extra` decimal,
-    `deducciones` decimal,
-    `bonificaciones` decimal,
-    `neto_pagar` decimal
+CREATE TABLE `nomina_detalle` (
+    `id`             integer PRIMARY KEY AUTO_INCREMENT,
+    `nomina_id`      integer,
+    `empleado_id`    integer,
+    `ausencias`     integer,
+    `laborados`      integer,
+    `sueldo_base`    decimal(10,2),
+    `horas_extra`    decimal(10,2),
+    `bonificaciones` decimal(10,2),
+    `IGGS`    decimal(10,2),
+    `ISR`     decimal(10,2),
+    `anticipos` decimal(10,2),
+    `prestamos` decimal(10,2),
+    `otros_descuentos` decimal(10,2),
+    `sueldo_liquido`     decimal(10,2),
+    FOREIGN KEY (`nomina_id`) REFERENCES `nomina` (`id`),
+    FOREIGN KEY (`empleado_id`) REFERENCES `empleados` (`id`)
 );
 
 ALTER TABLE `usuarios`
@@ -116,10 +135,4 @@ ALTER TABLE `vacaciones`
 ADD FOREIGN KEY (`empleado_id`) REFERENCES `empleados` (`id`);
 
 ALTER TABLE `prestamos`
-ADD FOREIGN KEY (`empleado_id`) REFERENCES `empleados` (`id`);
-
-ALTER TABLE `recibos`
-ADD FOREIGN KEY (`nomina_id`) REFERENCES `nominas` (`id`);
-
-ALTER TABLE `recibos`
 ADD FOREIGN KEY (`empleado_id`) REFERENCES `empleados` (`id`);
