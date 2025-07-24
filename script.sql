@@ -1,16 +1,31 @@
 CREATE DATABASE IF NOT EXISTS db_nomina;
 USE db_nomina;
 
+CREATE TABLE `departamentos` (
+ `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
+ `nombre` VARCHAR(255) UNIQUE NOT NULL,
+ `descripcion` VARCHAR(255)
+);
+
+CREATE TABLE `puestos` (
+   `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
+   `nombre` VARCHAR(255) NOT NULL,
+   `descripcion` VARCHAR(255),
+   `departamento_id` INTEGER,
+   FOREIGN KEY (`departamento_id`) REFERENCES `departamentos` (`id`)
+);
+
+-- Tabla de empleados (modificada)
 CREATE TABLE `empleados` (
-    `id` integer PRIMARY KEY AUTO_INCREMENT,
-    `nombre` varchar(255),
-    `apellido` varchar(255),
-    `dpi` varchar(255) UNIQUE,
-    `fecha_ingreso` date,
-    `salario` real,
-    `puesto` varchar(255),
-    `departamento` varchar(255),
-    `estado` boolean
+     `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
+     `nombre` VARCHAR(255),
+     `apellido` VARCHAR(255),
+     `dpi` VARCHAR(255) UNIQUE,
+     `fecha_ingreso` DATE,
+     `salario` REAL,
+     `puesto_id` INTEGER,
+     `estado` BOOLEAN,
+     FOREIGN KEY (`puesto_id`) REFERENCES `puestos` (`id`)
 );
 
 CREATE TABLE `usuarios` (
