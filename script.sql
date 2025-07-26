@@ -2,137 +2,139 @@ DROP DATABASE IF EXISTS db_nomina;
 CREATE DATABASE IF NOT EXISTS db_nomina;
 USE db_nomina;
 
+
 CREATE TABLE `departamentos` (
- `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
- `nombre` VARCHAR(255) UNIQUE NOT NULL,
- `descripcion` VARCHAR(255)
+    `id` int PRIMARY KEY AUTO_INCREMENT,
+    `nombre` varchar(255) UNIQUE NOT NULL,
+    `descripcion` varchar(255)
 );
 
 CREATE TABLE `puestos` (
-   `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
-   `nombre` VARCHAR(255) NOT NULL,
-   `descripcion` VARCHAR(255),
-   `departamento_id` INTEGER,
-   FOREIGN KEY (`departamento_id`) REFERENCES `departamentos` (`id`)
+    `id` int PRIMARY KEY AUTO_INCREMENT,
+    `nombre` varchar(255) NOT NULL,
+    `descripcion` varchar(255),
+    `departamento_id` int
 );
 
--- Tabla de empleados (modificada)
 CREATE TABLE `empleados` (
-     `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
-     `nombre` VARCHAR(255),
-     `apellido` VARCHAR(255),
-     `dpi` VARCHAR(255) UNIQUE,
-     `fecha_ingreso` DATE,
-     `salario` REAL,
-     `puesto_id` INTEGER,
-     `estado` BOOLEAN,
-     FOREIGN KEY (`puesto_id`) REFERENCES `puestos` (`id`)
-);
-
-CREATE TABLE `usuarios` (
-    `id` integer PRIMARY KEY AUTO_INCREMENT,
-    `username` varchar(255) UNIQUE NOT NULL,
-    `password_hash` varchar(255) NOT NULL,
-    `rol` varchar(255) NOT NULL,
-    `empleado_id` integer,
+    `id` int PRIMARY KEY AUTO_INCREMENT,
+    `nombre` varchar(255),
+    `apellido` varchar(255),
+    `dpi` varchar(255) UNIQUE,
+    `fecha_ingreso` date,
+    `salario` decimal(10,2),
+    `puesto_id` int,
     `estado` boolean
 );
 
--- Tabla de anticipos
+CREATE TABLE `usuarios` (
+    `id` int PRIMARY KEY AUTO_INCREMENT,
+    `username` varchar(255) UNIQUE NOT NULL,
+    `password_hash` varchar(255) NOT NULL,
+    `rol` varchar(255) NOT NULL,
+    `empleado_id` int,
+    `estado` boolean
+);
+
 CREATE TABLE `anticipos` (
-     `id` INTEGER PRIMARY KEY AUTO_INCREMENT,
-     `empleado_id` INTEGER,
-     `monto` DECIMAL(10,2),
-     `fecha` DATE,
-     `motivo` VARCHAR(255),
-     `saldo_pendiente` DECIMAL(10,2),
-     FOREIGN KEY (`empleado_id`) REFERENCES `empleados` (`id`)
+    `id` int PRIMARY KEY AUTO_INCREMENT,
+    `empleado_id` int,
+    `monto` decimal(10,2),
+    `fecha` date,
+    `motivo` varchar(255),
+    `saldo_pendiente` decimal(10,2)
 );
 
 CREATE TABLE `asistencias` (
-    `id` integer PRIMARY KEY AUTO_INCREMENT,
-    `empleado_id` integer,
+    `id` int PRIMARY KEY AUTO_INCREMENT,
+    `empleado_id` int,
     `fecha` date,
     `hora_entrada` time,
     `hora_salida` time
 );
 
 CREATE TABLE `horas_extra` (
-    `id` integer PRIMARY KEY AUTO_INCREMENT,
-    `empleado_id` integer,
+    `id` int PRIMARY KEY AUTO_INCREMENT,
+    `empleado_id` int,
     `fecha` date,
-    `horas` integer,
+    `horas` int,
     `motivo` varchar(255),
     `aprobado` boolean
 );
 
 CREATE TABLE `ausencias_permisos` (
-    `id` integer PRIMARY KEY AUTO_INCREMENT,
-    `empleado_id` integer,
+    `id` int PRIMARY KEY AUTO_INCREMENT,
+    `empleado_id` int,
     `fecha` date,
-    `tipo` enum('ausencia', 'permiso'),
+    `tipo` varchar(255),
     `justificada` boolean,
     `motivo` varchar(255),
     `observacion` varchar(255)
 );
 
 CREATE TABLE `vacaciones` (
-    `id` integer PRIMARY KEY AUTO_INCREMENT,
-    `empleado_id` integer,
+    `id` int PRIMARY KEY AUTO_INCREMENT,
+    `empleado_id` int,
     `fecha_inicio` date,
     `fecha_fin` date,
-    `dias` integer,
+    `dias` int,
     `aprobada` boolean
 );
 
-CREATE TABLE `prestamos` (
-    `id` integer PRIMARY KEY AUTO_INCREMENT,
-    `empleado_id` integer,
-    `monto` decimal,
+CREATE TABLE `adelantos` (
+    `id` int PRIMARY KEY AUTO_INCREMENT,
+    `empleado_id` int,
+    `monto` decimal(10,2),
     `fecha` date,
-    `saldo_pendiente` decimal
+    `saldo_pendiente` decimal(10,2)
 );
 
 CREATE TABLE `nomina` (
-    `id` integer PRIMARY KEY AUTO_INCREMENT,
+    `id` int PRIMARY KEY AUTO_INCREMENT,
     `periodo_inicio` date,
     `periodo_fin` date,
-    `fecha_generacion` date
+    `fecha_generacion` date,
+    `tipo` enum('Quincenal','Mensual')
 );
 
-CREATE TABLE `nomina_detalle` (
-    `id`             integer PRIMARY KEY AUTO_INCREMENT,
-    `nomina_id`      integer,
-    `empleado_id`    integer,
-    `ausencias`     integer,
-    `laborados`      integer,
-    `sueldo_base`    decimal(10,2),
-    `horas_extra`    decimal(10,2),
-    `bonificaciones` decimal(10,2),
-    `IGGS`    decimal(10,2),
-    `ISR`     decimal(10,2),
-    `anticipos` decimal(10,2),
-    `prestamos` decimal(10,2),
-    `otros_descuentos` decimal(10,2),
-    `sueldo_liquido`     decimal(10,2),
-    FOREIGN KEY (`nomina_id`) REFERENCES `nomina` (`id`),
-    FOREIGN KEY (`empleado_id`) REFERENCES `empleados` (`id`)
+CREATE TABLE `detalles_nomina` (
+    `id` int PRIMARY KEY AUTO_INCREMENT,
+    `nomina_id` int,
+    `empleado_id` int,
+    `ausencias` int,
+    `dias_laborados` int,
+    `percepciones` decimal(10,2),
+    `deducciones` decimal(10,2),
+    `sueldo_liquido` decimal(10,2)
 );
 
-ALTER TABLE `usuarios`
-ADD FOREIGN KEY (`empleado_id`) REFERENCES `empleados` (`id`);
+CREATE TABLE `conceptos_nomina` (
+    `id` int PRIMARY KEY AUTO_INCREMENT,
+    `nombre` varchar(100) NOT NULL,
+    `descripcion` text,
+    `tipo` enum('PERCEPCION','DEDUCCION'),
+    `tipo_calculo` enum('FIJO','PORCENTAJE','MULTIPLICACION','DIVISION') DEFAULT 'MULTIPLICACION',
+    `valor` decimal(10,2),
+    `aplica_automatico` boolean DEFAULT false
+);
 
-ALTER TABLE `asistencias`
-ADD FOREIGN KEY (`empleado_id`) REFERENCES `empleados` (`id`);
+CREATE TABLE `movimientos_nomina` (
+    `id` int PRIMARY KEY AUTO_INCREMENT,
+    `detalle_nomina_id` int,
+    `concepto_id` int,
+    `monto` decimal(10,2)
+);
 
-ALTER TABLE `horas_extra`
-ADD FOREIGN KEY (`empleado_id`) REFERENCES `empleados` (`id`);
-
-ALTER TABLE `ausencias_permisos`
-ADD FOREIGN KEY (`empleado_id`) REFERENCES `empleados` (`id`);
-
-ALTER TABLE `vacaciones`
-ADD FOREIGN KEY (`empleado_id`) REFERENCES `empleados` (`id`);
-
-ALTER TABLE `prestamos`
-ADD FOREIGN KEY (`empleado_id`) REFERENCES `empleados` (`id`);
+ALTER TABLE `puestos` ADD FOREIGN KEY (`departamento_id`) REFERENCES `departamentos` (`id`);
+ALTER TABLE `empleados` ADD FOREIGN KEY (`puesto_id`) REFERENCES `puestos` (`id`);
+ALTER TABLE `usuarios` ADD FOREIGN KEY (`empleado_id`) REFERENCES `empleados` (`id`);
+ALTER TABLE `anticipos` ADD FOREIGN KEY (`empleado_id`) REFERENCES `empleados` (`id`);
+ALTER TABLE `asistencias` ADD FOREIGN KEY (`empleado_id`) REFERENCES `empleados` (`id`);
+ALTER TABLE `horas_extra` ADD FOREIGN KEY (`empleado_id`) REFERENCES `empleados` (`id`);
+ALTER TABLE `ausencias_permisos` ADD FOREIGN KEY (`empleado_id`) REFERENCES `empleados` (`id`);
+ALTER TABLE `vacaciones` ADD FOREIGN KEY (`empleado_id`) REFERENCES `empleados` (`id`);
+ALTER TABLE `adelantos` ADD FOREIGN KEY (`empleado_id`) REFERENCES `empleados` (`id`);
+ALTER TABLE `detalles_nomina` ADD FOREIGN KEY (`nomina_id`) REFERENCES `nomina` (`id`);
+ALTER TABLE `detalles_nomina` ADD FOREIGN KEY (`empleado_id`) REFERENCES `empleados` (`id`);
+ALTER TABLE `movimientos_nomina` ADD FOREIGN KEY (`detalle_nomina_id`) REFERENCES `detalles_nomina` (`id`);
+ALTER TABLE `movimientos_nomina` ADD FOREIGN KEY (`concepto_id`) REFERENCES `conceptos_nomina` (`id`);
