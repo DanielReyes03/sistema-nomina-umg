@@ -13,6 +13,11 @@ import javafx.stage.Stage;
 public class MenuAdminController {
 
     @FXML
+    public void abrirConceptoNomina() {
+        abrirVentana("concepto-nomina.fxml", "Concepto Nomina");
+    }
+
+    @FXML
     public void abrirMenuUsuarios() {
         abrirVentana("usuarios.fxml", "Usuarios");
     }
@@ -44,7 +49,7 @@ public class MenuAdminController {
 
     @FXML
     public void abrirMenuPlanilla() {
-        abrirVentana("planilla.fxml", "Planilla");
+        abrirVentana("nomina.fxml", "Nomina");
     }
 
     @FXML
