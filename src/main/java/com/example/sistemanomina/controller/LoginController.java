@@ -78,7 +78,7 @@ public class LoginController {
             // 3. Redirección por rol
             Stage stage = (Stage) loginBoton.getScene().getWindow();
             if ("ADMIN".equalsIgnoreCase(user.getRol())) {
-                cargarVentana("menu-admin.fxml", "Menú Administrador", stage);
+                cargarVentana("layout.fxml", "Menú Administrador", stage);
             } else {
                 cargarVentana("menu-usuario.fxml", "Menú Usuario", stage);
             }

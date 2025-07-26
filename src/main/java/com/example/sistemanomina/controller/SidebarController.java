@@ -7,69 +7,88 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.stage.Stage;
+import com.example.sistemanomina.util.ViewManager;
 
 public class SidebarController {
 
     @FXML
     public void abrirMenuUsuarios() {
-        abrirVentana("usuarios.fxml", "Usuarios");
+        abrirVentana("/com/example/sistemanomina/usuarios.fxml", "Usuarios");
     }
+
 
     @FXML
     public void abrirMenuEmpleados() {
-        abrirVentana("empleados.fxml", "Empleados");
+        abrirVentana("/com/example/sistemanomina/empleados.fxml", "Empleados");
     }
 
     @FXML
     public void abrirMenuAsistencia() {
-        abrirVentana("asistencia.fxml", "Asistencia");
+        abrirVentana("/com/example/sistemanomina/asistencia.fxml", "Asistencia");
     }
 
     @FXML
     public void abrirMenuVacaciones() {
-        abrirVentana("vacaciones.fxml", "Vacaciones");
+        abrirVentana("/com/example/sistemanomina/vacaciones.fxml", "Vacaciones");
     }
 
     @FXML
     public void abrirMenuHorasExtra() {
-        abrirVentana("horasextra.fxml", "Horas Extra");
+        abrirVentana("/com/example/sistemanomina/horas-extra.fxml", "Horas Extra");
     }
 
     @FXML
     public void abrirMenuAnticipos() {
-        abrirVentana("anticipos.fxml", "Anticipos");
+        abrirVentana("/com/example/sistemanomina/anticipos.fxml", "Anticipos");
     }
 
     @FXML
     public void abrirMenuPlanilla() {
-        abrirVentana("planilla.fxml", "Planilla");
+        abrirVentana("/com/example/sistemanomina/planilla.fxml", "Planilla");
     }
 
     @FXML
     public void abrirMenuReporteria() {
-        abrirVentana("reporteria.fxml", "Reporteria");
+        abrirVentana("/com/example/sistemanomina/reporteria.fxml", "Reporteria");
     }
 
     @FXML
     public void abrirMenuDepartamentos() {
-        abrirVentana("departamento.fxml", "Departamentos");
+        abrirVentana("/com/example/sistemanomina/departamento.fxml", "Departamentos");
     }
 
     @FXML
     public void abrirMenuPuestos() {
-        abrirVentana("puestos.fxml", "Puestos");
+        abrirVentana("/com/example/sistemanomina/puestos.fxml", "Puestos");
     }
+
+    @FXML
+    public void abrirMenuNomina() {
+        abrirVentana("/com/example/sistemanomina/nomina.fxml", "Nomina");
+    }
+
+    @FXML
+    public void abrirMenuConceptoNomina() {
+        abrirVentana("/com/example/sistemanomina/concepto-nomina.fxml", "Conceptos Nomina");
+    }
+
+
 
     private void abrirVentana(String fxmlPath, String titulo) {
         try {
-            FXMLLoader loader = new FXMLLoader(Main.class.getResource(fxmlPath));
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.setTitle(titulo);
-            stage.setScene(new Scene(root));
-            stage.show();
+            ViewManager.getInstance().showView(fxmlPath, titulo);
         } catch (Exception e) {
             mostrarAlerta("Error", "No se pudo cargar la ventana: " + titulo);
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void salirMenu(){
+        try {
+            ViewManager.getInstance().showWelcome();
+        } catch (Exception e) {
+            mostrarAlerta("Error", "No se pudo cargar la ventana de bienvenida.");
             e.printStackTrace();
         }
     }
