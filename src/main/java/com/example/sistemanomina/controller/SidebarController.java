@@ -19,7 +19,7 @@ public class SidebarController {
 
     @FXML
     public void abrirMenuEmpleados() {
-        abrirVentana("/com/example/sistemanomina/empleados.fxml", "Empleados");
+        abrirVentana("/com/example/sistemanomina/empleado.fxml", "Empleados");
     }
 
     @FXML
