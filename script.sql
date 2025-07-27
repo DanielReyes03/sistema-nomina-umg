@@ -17,6 +17,7 @@ CREATE TABLE `puestos` (
     `departamento_id` int
 );
 
+
 CREATE TABLE `empleados` (
     `id` int PRIMARY KEY AUTO_INCREMENT,
     `nombre` varchar(255),
@@ -24,8 +25,7 @@ CREATE TABLE `empleados` (
     `dpi` varchar(255) UNIQUE,
     `fecha_ingreso` date,
     `salario` decimal(10,2),
-    `puesto_id` int,
-    `estado` boolean
+    `puesto_id` int
 );
 
 CREATE TABLE `usuarios` (

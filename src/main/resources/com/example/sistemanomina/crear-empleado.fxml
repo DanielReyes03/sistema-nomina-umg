@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sistemanomina.controller.CrearEmpleadoController">
+
+   <!-- Encabezado -->
+   <Pane prefHeight="100.0" prefWidth="1000.0" style="-fx-background-color: #A1D8E8;">
+      <children>
+         <Text layoutX="500.0" layoutY="68.0" text="SISTEMA DE NOMINA" textAlignment="CENTER">
+            <font>
+               <Font name="System Bold" size="35.0" />
+            </font>
+         </Text>
+      </children>
+   </Pane>
+
+   <!-- Imagenes -->
+   <!-- (Omitidas por brevedad pero puedes mantenerlas si son necesarias) -->
+
+   <!-- Campos de formulario -->
+   <Label layoutX="247.0" layoutY="205.0" text="Nombre" />
+   <TextField fx:id="txtNombre" layoutX="239.0" layoutY="230.0" promptText="Ingrese su nombre" />
+
+   <Label layoutX="500.0" layoutY="205.0" text="Apellido" />
+   <TextField fx:id="txtApellido" layoutX="500.0" layoutY="230.0" promptText="Ingrese su apellido" />
+
+   <Label layoutX="741.0" layoutY="205.0" text="DPI" />
+   <TextField fx:id="txtDPI" layoutX="742.0" layoutY="230.0" promptText="Ingrese su DPI" />
+
+   <Label layoutX="247.0" layoutY="312.0" text="Puesto" />
+   <ComboBox fx:id="comboPuesto" layoutX="239.0" layoutY="338.0" prefWidth="150.0" />
+
+   <Label layoutX="500.0" layoutY="312.0" text="Fecha de ingreso" />
+   <DatePicker fx:id="DTFechin" layoutX="500.0" layoutY="337.0" />
+
+   <Label layoutX="742.0" layoutY="312.0" text="Departamento" />
+
+   <Label layoutX="247.0" layoutY="432.0" text="Salario" />
+   <TextField fx:id="txtSalario" layoutX="239.0" layoutY="459.0" promptText="Ingrese salario" />
+
+   <!-- Botones acción -->
+   <Button fx:id="btnguardare" layoutX="741.0" layoutY="454.0" onAction="#onbtnguardare" prefHeight="33.0" prefWidth="136.0" style="-fx-background-color: #A8D5B9; -fx-background-radius: 10;" text="Guardar empleado" />
+
+   <Button fx:id="btnregresar" layoutX="823.0" layoutY="137.0" onAction="#onbtnregresar" prefHeight="38.0" prefWidth="100.0" style="-fx-background-color: #A8D5B9; -fx-background-radius: 10;" text="Regresar" />
+
+   <!-- Texto superior -->
+   <Text fx:id="MensajeAccion" layoutX="239.0" layoutY="146.0" text="Crear nuevo Empleado">
+      <font><Font size="23.0" /></font>
+   </Text>
+   <ComboBox fx:id="comboDepartamento" layoutX="734.0" layoutY="338.0" prefWidth="150.0" />
+
+</AnchorPane>
