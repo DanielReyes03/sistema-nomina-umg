@@ -53,7 +53,7 @@ public class EmpleadoController {
             colDPI.setCellValueFactory(cellData ->
                     new SimpleStringProperty(cellData.getValue().getDpi()));
             colPuesto.setCellValueFactory(cellData ->
-                    new SimpleStringProperty("Puesto #" + cellData.getValue().getPuestoId()));
+                    new SimpleStringProperty(cellData.getValue().getNombrePuesto() ));
             colFechin.setCellValueFactory(cellData ->
                     new SimpleStringProperty(
                             cellData.getValue().getFechaIngreso()
@@ -73,7 +73,6 @@ public class EmpleadoController {
 
     public void cargarEmpleados() {
         List<Empleado> lista = empleadoDAO.obtenerEmpleados();
-        lista.forEach(emp -> System.out.println(emp.getNombre() + " - " + emp.getApellido()));
         ObservableList<Empleado> empleados = FXCollections.observableArrayList(lista);
         tblempleados.setItems(empleados);
     }
@@ -121,7 +120,7 @@ public class EmpleadoController {
 
             CrearEmpleadoController controller = loader.getController();
             controller.setEmpleadoController(this);
-            //controller.setDepartamentoEditar(departamento);
+            controller.setEmpleadoEditar(empleado);
 
             Stage stage = new Stage();
             stage.setTitle("Crear Nuevo Empleado");

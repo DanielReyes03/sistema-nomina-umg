@@ -1,3 +1,5 @@
+// CrearEmpleadoController.java
+
 package com.example.sistemanomina.controller;
 
 import com.example.sistemanomina.dao.DepartamentoDAO;
@@ -8,17 +10,14 @@ import com.example.sistemanomina.model.Departamento;
 import com.example.sistemanomina.model.Empleado;
 import com.example.sistemanomina.model.Puestos;
 import com.example.sistemanomina.util.Alertas;
+import com.example.sistemanomina.util.Validadores;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
-import java.io.IOException;
 import java.sql.Connection;
 import java.time.LocalDate;
 import java.util.List;
@@ -41,8 +40,7 @@ public class CrearEmpleadoController {
     private EmpleadoDAO empleadoDAO;
 
     private EmpleadoController empleadoController;
-
-
+    private Empleado empleadoEditar;
 
     @FXML
     public void initialize() {
@@ -51,9 +49,13 @@ public class CrearEmpleadoController {
             departamentoDAO = new DepartamentoDAO(conn);
             puestosDAO = new PuestosDAO(conn);
             empleadoDAO = new EmpleadoDAO(conn);
-
             cargarDepartamentos();
             configurarEventos();
+
+            // Si estamos editando, rellenar los campos
+            if (empleadoEditar != null) {
+                rellenarCamposEdicion();
+            }
 
         } catch (Exception e) {
             MensajeAccion.setText("Error al inicializar: " + e.getMessage());
@@ -62,6 +64,14 @@ public class CrearEmpleadoController {
 
     public void setEmpleadoController(EmpleadoController empleadoController) {
         this.empleadoController = empleadoController;
+    }
+
+    public void setEmpleadoEditar(Empleado empleado){
+        this.empleadoEditar = empleado;
+        // Si el FXML ya está inicializado, rellenar los campos
+        if (comboDepartamento != null) {
+            rellenarCamposEdicion();
+        }
     }
 
     private void cargarDepartamentos() {
@@ -114,6 +124,41 @@ public class CrearEmpleadoController {
         });
     }
 
+    private void rellenarCamposEdicion() {
+        try {
+            if (empleadoEditar == null) return;
+
+            txtNombre.setText(empleadoEditar.getNombre());
+            txtApellido.setText(empleadoEditar.getApellido());
+            txtDPI.setText(empleadoEditar.getDpi());
+            DTFechin.setValue(empleadoEditar.getFechaIngreso());
+            txtSalario.setText(String.valueOf(empleadoEditar.getSalario()));
+
+            // Buscar el puesto y departamento del empleado
+            Puestos puestoEmpleado = puestosDAO.obtenerPorId(empleadoEditar.getPuestoId());
+            if (puestoEmpleado != null) {
+                Departamento departamentoEmpleado = departamentoDAO.obtenerPorId(puestoEmpleado.getIdDepartamento());
+                if (departamentoEmpleado != null) {
+                    comboDepartamento.setValue(departamentoEmpleado);
+
+                    // Cargar los puestos del departamento seleccionado
+                    List<Puestos> puestos = puestosDAO.obtenerPorDepartamento(departamentoEmpleado.getId());
+                    comboPuesto.setItems(FXCollections.observableArrayList(puestos));
+
+                    // Seleccionar el puesto correspondiente
+                    for (Puestos p : puestos) {
+                        if (p.getId() == puestoEmpleado.getId()) {
+                            comboPuesto.setValue(p);
+                            break;
+                        }
+                    }
+                }
+            }
+        }catch (Exception e) {
+            MensajeAccion.setText("Error al rellenar los campos de edición: " + e.getMessage());
+        }
+    }
+
     @FXML
     private void onbtnguardare() {
         try {
@@ -125,6 +170,18 @@ public class CrearEmpleadoController {
                 return;
             }
 
+            boolean dpiValido = Validadores.validarLongitud(txtDPI, "DPI", 13, 13);
+            if(!dpiValido){
+                Alertas.mostrarError("Error", "El DPI debe tener exactamente 13 caracteres.");
+                return;
+            }
+
+            Empleado empleadoExiste = empleadoDAO.validarEmpleadoUnico(txtDPI.getText().trim());
+            if(empleadoExiste != null){
+                Alertas.mostrarError("Error", "Ya existe un empleado con el mismo DPI y nombre.");
+                return;
+            }
+
             String nombre = txtNombre.getText().trim();
             String apellido = txtApellido.getText().trim();
             String dpi = txtDPI.getText().trim();
@@ -132,19 +189,28 @@ public class CrearEmpleadoController {
             double salario = Double.parseDouble(txtSalario.getText());
             int puestoId = comboPuesto.getValue().getId();
 
-            Empleado empleado = new Empleado(0, nombre, apellido, dpi, fechaIngreso, salario, puestoId);
-
-            boolean exito = empleadoDAO.agregarEmpleado(empleado);
+            boolean exito;
+            if (empleadoEditar != null) {
+                // Actualizar empleado existente
+                Empleado empleadoActualizado = new Empleado(
+                        empleadoEditar.getId(), nombre, apellido, dpi, fechaIngreso, salario, puestoId
+                );
+                exito = empleadoDAO.actualizarEmpleado(empleadoActualizado);
+            } else {
+                // Crear nuevo empleado
+                Empleado empleado = new Empleado(0, nombre, apellido, dpi, fechaIngreso, salario, puestoId);
+                exito = empleadoDAO.agregarEmpleado(empleado);
+            }
 
             if (exito) {
-                Alertas.mostrarInfo("Éxito", "Concepto creado correctamente.");
+                Alertas.mostrarInfo("Éxito", empleadoEditar != null ? "Empleado actualizado correctamente." : "Empleado creado correctamente.");
                 limpiarCampos();
                 if (empleadoController != null) {
                     empleadoController.cargarEmpleados();
                 }
                 this.cerrarVentana();
             } else {
-                Alertas.mostrarError("Error", "No se pudo guardar el empleado.");
+                Alertas.mostrarError("Error", empleadoEditar != null ? "No se pudo actualizar el empleado." : "No se pudo guardar el empleado.");
             }
 
         } catch (NumberFormatException e) {

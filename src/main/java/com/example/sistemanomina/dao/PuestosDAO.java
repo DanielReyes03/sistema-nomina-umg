@@ -65,6 +65,8 @@ public class PuestosDAO {
                     );
                 }
             }
+        }catch (SQLException e) {
+            System.out.println("Error al obtener puesto por ID: " + e.getMessage());
         }
         return null;
     }

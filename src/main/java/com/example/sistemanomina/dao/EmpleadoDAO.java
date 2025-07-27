@@ -133,4 +133,29 @@ public class EmpleadoDAO {
             return false;
         }
     }
+
+    public Empleado validarEmpleadoUnico(String DPI){
+        try {
+            String sql = "SELECT * FROM empleados WHERE dpi = ?";
+            PreparedStatement stmt = connection.prepareStatement(sql);
+            stmt.setString(1, DPI);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                Empleado empleado = new Empleado();
+                empleado.setId(rs.getInt("id"));
+                empleado.setNombre(rs.getString("nombre"));
+                empleado.setApellido(rs.getString("apellido"));
+                empleado.setDpi(rs.getString("dpi"));
+                empleado.setFechaIngreso(rs.getDate("fecha_ingreso").toLocalDate());
+                empleado.setSalario(rs.getDouble("salario"));
+                empleado.setPuestoId(rs.getInt("puesto_id"));
+                return empleado;
+            }
+            return null;
+        } catch (Exception e){
+            e.printStackTrace();
+            return null;
+        }
+    }
 }
