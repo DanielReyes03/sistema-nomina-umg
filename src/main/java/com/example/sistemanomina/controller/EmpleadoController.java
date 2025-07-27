@@ -3,6 +3,7 @@ package com.example.sistemanomina.controller;
 import com.example.sistemanomina.dao.EmpleadoDAO;
 import com.example.sistemanomina.db.DatabaseConnection;
 import com.example.sistemanomina.model.Empleado;
+import com.example.sistemanomina.util.Alertas;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -42,8 +43,6 @@ public class EmpleadoController {
 
     @FXML
     public void initialize() {
-        System.out.println("Inicializando EmpleadoController...");
-
         try {
             colID.setCellValueFactory(cellData ->
                     new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
@@ -72,30 +71,18 @@ public class EmpleadoController {
         }
     }
 
-    private void cargarEmpleados() {
+    public void cargarEmpleados() {
         List<Empleado> lista = empleadoDAO.obtenerEmpleados();
-        System.out.println("Total empleados encontrados: " + lista.size());
         lista.forEach(emp -> System.out.println(emp.getNombre() + " - " + emp.getApellido()));
-
         ObservableList<Empleado> empleados = FXCollections.observableArrayList(lista);
         tblempleados.setItems(empleados);
     }
 
     @FXML
     private void onbtncrear() {
-        System.out.println("Abrir formulario para crear empleado...");
-
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/sistemanomina/crear-empleado.fxml"));
-            Parent root = loader.load();
-
-            Stage stage = new Stage();
-            stage.setTitle("Crear Nuevo Empleado");
-            stage.setScene(new Scene(root));
-            stage.setResizable(false);
-            stage.show();
-
-        } catch (IOException e) {
+            this.abrirFormulario(null);
+        } catch (Exception e) {
             e.printStackTrace();
             mostrarAlerta("Error al abrir el formulario para crear empleado.");
         }
@@ -105,8 +92,7 @@ public class EmpleadoController {
     private void onbtnactualizar() {
         Empleado seleccionado = tblempleados.getSelectionModel().getSelectedItem();
         if (seleccionado != null) {
-            System.out.println("Actualizar empleado ID: " + seleccionado.getId());
-            // Aquí puedes cargar otro formulario para actualizar
+            this.abrirFormulario(seleccionado);
         } else {
             mostrarAlerta("Debes seleccionar un empleado para actualizar.");
         }
@@ -125,6 +111,26 @@ public class EmpleadoController {
             }
         } else {
             mostrarAlerta("Debes seleccionar un empleado para eliminar.");
+        }
+    }
+
+    private void abrirFormulario(Empleado empleado){
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/sistemanomina/crear-empleado.fxml"));
+            Parent root = loader.load();
+
+            CrearEmpleadoController controller = loader.getController();
+            controller.setEmpleadoController(this);
+            //controller.setDepartamentoEditar(departamento);
+
+            Stage stage = new Stage();
+            stage.setTitle("Crear Nuevo Empleado");
+            stage.setScene(new Scene(root));
+            stage.setResizable(false);
+            stage.show();
+        } catch (Exception e) {
+            Alertas.mostrarError("Error", "Error al abrir el formulario de empleado");
+            e.printStackTrace();
         }
     }
 

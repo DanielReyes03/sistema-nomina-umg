@@ -7,6 +7,7 @@ import com.example.sistemanomina.db.DatabaseConnection;
 import com.example.sistemanomina.model.Departamento;
 import com.example.sistemanomina.model.Empleado;
 import com.example.sistemanomina.model.Puestos;
+import com.example.sistemanomina.util.Alertas;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
@@ -32,10 +33,16 @@ public class CrearEmpleadoController {
     @FXML private ComboBox<Departamento> comboDepartamento;
     @FXML private ComboBox<Puestos> comboPuesto;
     @FXML private Text MensajeAccion;
+    @FXML private Button btnregresar;
+    @FXML private Button btnguardare;
 
     private DepartamentoDAO departamentoDAO;
     private PuestosDAO puestosDAO;
     private EmpleadoDAO empleadoDAO;
+
+    private EmpleadoController empleadoController;
+
+
 
     @FXML
     public void initialize() {
@@ -51,6 +58,10 @@ public class CrearEmpleadoController {
         } catch (Exception e) {
             MensajeAccion.setText("Error al inicializar: " + e.getMessage());
         }
+    }
+
+    public void setEmpleadoController(EmpleadoController empleadoController) {
+        this.empleadoController = empleadoController;
     }
 
     private void cargarDepartamentos() {
@@ -126,33 +137,29 @@ public class CrearEmpleadoController {
             boolean exito = empleadoDAO.agregarEmpleado(empleado);
 
             if (exito) {
-                MensajeAccion.setText("Empleado guardado exitosamente.");
+                Alertas.mostrarInfo("Éxito", "Concepto creado correctamente.");
                 limpiarCampos();
+                if (empleadoController != null) {
+                    empleadoController.cargarEmpleados();
+                }
+                this.cerrarVentana();
             } else {
-                MensajeAccion.setText("Error al guardar el empleado.");
+                Alertas.mostrarError("Error", "No se pudo guardar el empleado.");
             }
 
         } catch (NumberFormatException e) {
-            MensajeAccion.setText("Salario inválido.");
+            Alertas.mostrarError("Error", "El salario debe ser un número válido.");
         } catch (Exception e) {
             e.printStackTrace();
-            MensajeAccion.setText("Error inesperado al guardar.");
+            Alertas.mostrarError("Error", "Ocurrió un error inesperado al guardar el empleado: ");
         }
     }
 
     @FXML
     private void onbtnregresar() {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/sistemanomina/empleado.fxml"));
-            Parent root = loader.load();
-            Stage stage = new Stage();
-            stage.setTitle("Menú Principal");
-            stage.setScene(new Scene(root));
-            stage.setResizable(false);
-            stage.show();
-            Stage actual = (Stage) MensajeAccion.getScene().getWindow();
-            actual.close();
-        } catch (IOException e) {
+            this.cerrarVentana();
+        } catch (Exception e) {
             MensajeAccion.setText("Error al regresar.");
         }
     }
@@ -165,5 +172,10 @@ public class CrearEmpleadoController {
         DTFechin.setValue(null);
         comboDepartamento.setValue(null);
         comboPuesto.setItems(FXCollections.observableArrayList());
+    }
+
+    private void cerrarVentana() {
+        Stage stage = (Stage) btnguardare.getScene().getWindow();
+        stage.close();
     }
 }
