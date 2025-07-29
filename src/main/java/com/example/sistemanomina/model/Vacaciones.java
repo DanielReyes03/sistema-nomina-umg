@@ -8,6 +8,7 @@ public class Vacaciones {
     private java.sql.Date fechaFin;
     private int dias;
     private boolean aprobada;
+    private String nombreEmpleado;
 
     // Constructor vacío
     public Vacaciones() {}
@@ -70,6 +71,14 @@ public class Vacaciones {
 
     public void setAprobada(boolean aprobada) {
         this.aprobada = aprobada;
+    }
+
+    public String getNombreEmpleado() {
+        return nombreEmpleado;
+    }
+
+    public void setNombreEmpleado(String nombreEmpleado) {
+        this.nombreEmpleado = nombreEmpleado;
     }
 
     // Método toString para depuración
