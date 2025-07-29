@@ -8,6 +8,7 @@ module com.example.sistemanomina {
 
     requires java.sql;
     requires mysql.connector.j;
+    requires java.desktop;
 
     opens com.example.sistemanomina to javafx.fxml;
     opens com.example.sistemanomina.controller to javafx.fxml;

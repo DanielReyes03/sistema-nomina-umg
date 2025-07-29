@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane maxHeight="500.0" maxWidth="750.0" prefHeight="500.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/20.0.2" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sistemanomina.controller.ConceptoNominaController">
+   <TableView fx:id="tablaNomina" layoutX="2.0" layoutY="112.0" maxWidth="750.0" prefHeight="362.0" prefWidth="750.0">
+     <columns>
+       <TableColumn fx:id="colId" prefWidth="55.0" text="Codigo" />
+       <TableColumn fx:id="colNombre" prefWidth="134.0" text="Nombre" />
+        <TableColumn fx:id="colDescripcion" prefWidth="162.0" text="Descripcion" />
+         <TableColumn fx:id="colTipo" prefWidth="97.0" text="Tipo" />
+         <TableColumn fx:id="colTipoCalculo" prefWidth="108.0" text="Tipo Calculo" />
+         <TableColumn fx:id="colValor" prefWidth="76.0" text="Valor" />
+         <TableColumn fx:id="colAplicaAutomatico" prefWidth="117.0" text="Automatico" />
+     </columns>
+   </TableView>
+   <Button fx:id="btnCrear" layoutX="411.0" layoutY="38.0" mnemonicParsing="false" onAction="#onBtnCrear" style="-fx-background-color: #A8D5BA; -fx-background-radius: 10;" text="Crear nuevo">
+      <font>
+         <Font size="18.0" />
+      </font>
+   </Button>
+   <Button fx:id="btnActualizar" layoutX="545.0" layoutY="38.0" mnemonicParsing="false" onAction="#onBtnActualizar" style="-fx-background-color: #A8D5BA; -fx-background-radius: 10;" text="Actualizar">
+      <font>
+         <Font size="18.0" />
+      </font>
+   </Button>
+   <Button fx:id="btnEliminar" layoutX="658.0" layoutY="38.0" mnemonicParsing="false" onAction="#onBtnEliminar" style="-fx-background-color: #A8D5BA; -fx-background-radius: 10;" text="Eliminar">
+      <font>
+         <Font size="18.0" />
+      </font>
+   </Button>
+</AnchorPane>
