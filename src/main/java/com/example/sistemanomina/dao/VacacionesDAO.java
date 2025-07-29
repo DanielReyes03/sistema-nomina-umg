@@ -23,7 +23,6 @@ public class VacacionesDAO {
 
             stmt.executeUpdate();
 
-            // Obtener el ID generado automáticamente
             try (ResultSet rs = stmt.getGeneratedKeys()) {
                 if (rs.next()) {
                     vacaciones.setId(rs.getInt(1));
@@ -32,9 +31,14 @@ public class VacacionesDAO {
         }
     }
 
-    // Leer un registro por ID
+    // ✅ Obtener vacaciones por ID con nombre de empleado
     public Vacaciones obtenerPorId(int id) throws SQLException {
-        String sql = "SELECT * FROM vacaciones WHERE id = ?";
+        String sql = """
+            SELECT v.*, e.nombre AS nombre_empleado, e.apellido AS apellido_empleado
+            FROM vacaciones v
+            JOIN empleados e ON v.empleado_id = e.id
+            WHERE v.id = ?
+        """;
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -48,10 +52,14 @@ public class VacacionesDAO {
         return null;
     }
 
-    // Listar todos los registros
+    // ✅ Listar vacaciones con nombre de empleado
     public List<Vacaciones> listarTodos() throws SQLException {
         List<Vacaciones> lista = new ArrayList<>();
-        String sql = "SELECT * FROM vacaciones";
+        String sql = """
+            SELECT v.*, e.nombre AS nombre_empleado, e.apellido AS apellido_empleado
+            FROM vacaciones v
+            JOIN empleados e ON v.empleado_id = e.id
+        """;
 
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql);
@@ -67,8 +75,8 @@ public class VacacionesDAO {
     // Actualizar un registro
     public void actualizar(Vacaciones vacaciones) throws SQLException {
         String sql = "UPDATE vacaciones SET empleado_id = ?, fecha_inicio = ?, fecha_fin = ?, dias = ?, aprobada = ? WHERE id = ?";
-
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
+
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, vacaciones.getEmpleadoId());
@@ -82,10 +90,8 @@ public class VacacionesDAO {
         }
     }
 
-    // Eliminar un registro
     public void eliminar(int id) throws SQLException {
         String sql = "DELETE FROM vacaciones WHERE id = ?";
-
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -94,7 +100,7 @@ public class VacacionesDAO {
         }
     }
 
-    // Método auxiliar para mapear ResultSet a objeto Vacaciones
+    // ✅ Ahora mapeamos también el nombre y apellido del empleado
     private Vacaciones mapResultSet(ResultSet rs) throws SQLException {
         Vacaciones v = new Vacaciones();
         v.setId(rs.getInt("id"));
@@ -103,7 +109,12 @@ public class VacacionesDAO {
         v.setFechaFin(rs.getDate("fecha_fin"));
         v.setDias(rs.getInt("dias"));
         v.setAprobada(rs.getBoolean("aprobada"));
+
+        // ✅ Nuevo: Guardamos nombre completo
+        String nombre = rs.getString("nombre_empleado");
+        String apellido = rs.getString("apellido_empleado");
+        v.setNombreEmpleado(nombre + " " + apellido);
+
         return v;
     }
 }
-
