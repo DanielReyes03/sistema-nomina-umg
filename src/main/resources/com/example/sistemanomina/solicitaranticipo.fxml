@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="idempleao" prefHeight="510.0" prefWidth="587.0" style="-fx-background-color: 4;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sistemanomina.controller.SolicitarAnticipoController">
+
+    <Text layoutX="235.0" layoutY="78.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Solicitar">
+        <font>
+            <Font name="System Bold" size="23.0" />
+        </font>
+    </Text>
+
+    <Label fx:id="labelnombreemp" layoutX="104.0" layoutY="104.0" text="Nombre De Empleado">
+        <font>
+            <Font size="15.0" />
+        </font>
+    </Label>
+
+    <ComboBox fx:id="dropnombresEMPLEADO" layoutX="279.0" layoutY="102.0" prefWidth="150.0" />
+
+    <Label layoutX="104.0" layoutY="134.0" text="Fecha:">
+        <font>
+            <Font size="15.0" />
+        </font>
+    </Label>
+
+    <DatePicker fx:id="fechaanticipo" layoutX="279.0" layoutY="132.0" />
+
+    <Label layoutX="101.0" layoutY="169.0" text="Monto:">
+        <font>
+            <Font size="15.0" />
+        </font>
+    </Label>
+
+    <TextField fx:id="monto" layoutX="279.0" layoutY="167.0" minWidth="175.0" promptText="Q. 0.00" />
+
+    <Label fx:id="motivodelsoli" layoutX="101.0" layoutY="204.0" text="Motivo">
+        <font>
+            <Font size="15.0" />
+        </font>
+    </Label>
+
+    <TextField fx:id="motivodeanticipo" layoutX="178.0" layoutY="204.0" minHeight="150.0" minWidth="300.0" />
+
+    <Button fx:id="botonguardar" layoutX="172.0" layoutY="386.0" minWidth="80.0" mnemonicParsing="false" onAction="#btnguardar" style="-fx-background-radius: 15%; -fx-background-color: #A8D5B4;" text="Guardar">
+        <font>
+            <Font size="15.0" />
+        </font>
+    </Button>
+
+    <Button fx:id="botoncancelar" layoutX="314.0" layoutY="386.0" minWidth="80.0" mnemonicParsing="false" onAction="#btncancelar" style="-fx-background-radius: 15%; -fx-background-color: #A8D5B4;" text="Cancelar">
+        <font>
+            <Font size="15.0" />
+        </font>
+    </Button>
+
+</AnchorPane>
