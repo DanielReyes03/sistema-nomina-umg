@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sistemanomina.controller.VacacionesController">
+    <TableView fx:id="InputTablaVacaciones" layoutX="53.0" layoutY="99.0" prefHeight="361.0" prefWidth="759.0">
+        <columns>
+            <TableColumn fx:id="ColID" prefWidth="62.0" text="ID" />
+            <TableColumn fx:id="ColNombre" prefWidth="227.0" text="Nombre  Empleado" />
+         <TableColumn fx:id="ColCodigo" minWidth="0.0" prefWidth="160.0" text="Codigo Empleado" />
+         <TableColumn fx:id="ColFechaInicio" minWidth="0.0" prefWidth="86.0" text="Fecha Inicio" />
+         <TableColumn fx:id="ColFechaFin" minWidth="0.0" prefWidth="83.0" text="Fecha Fin" />
+         <TableColumn fx:id="ColDias" minWidth="0.0" prefWidth="55.0" text="Dias" />
+         <TableColumn fx:id="ColAprobada" minWidth="0.0" prefWidth="85.0" text="Aprobada" />
+        </columns>
+    </TableView>
+   <Button fx:id="botNuevo" layoutX="530.0" layoutY="34.0" mnemonicParsing="false" onAction="#botNuevo" prefHeight="33.0" prefWidth="95.0" style="-fx-background-color: #A8D5B9; -fx-background-radius: 10;" text="Crear Nuevo" />
+   <Button fx:id="botactualizar" layoutX="641.0" layoutY="34.0" mnemonicParsing="false" onAction="#botactualizar" prefHeight="33.0" prefWidth="75.0" style="-fx-background-color: #A8D5B9; -fx-background-radius: 10;" text="Actualizar" />
+   <Button fx:id="BotEliminar" layoutX="733.0" layoutY="34.0" mnemonicParsing="false" onAction="#boteliminar" prefHeight="33.0" prefWidth="68.0" style="-fx-background-color: #A8D5B9; -fx-background-radius: 10;" text="Eliminar" />
+</AnchorPane>
