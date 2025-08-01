@@ -2,6 +2,7 @@
 package com.example.sistemanomina.controller;
 
 import com.example.sistemanomina.Main;
+import com.example.sistemanomina.constantes.Roles;
 import com.example.sistemanomina.dao.UsuarioDAO;
 import com.example.sistemanomina.db.DatabaseConnection;
 import com.example.sistemanomina.model.Usuario;
@@ -77,12 +78,16 @@ public class LoginController {
 
             // 3. Redirección por rol
             Stage stage = (Stage) loginBoton.getScene().getWindow();
-            if ("ADMIN".equalsIgnoreCase(user.getRol())) {
-                cargarVentana("layout.fxml", "Menú Administrador", stage);
-            } else {
-                cargarVentana("menu-usuario.fxml", "Menú Usuario", stage);
+            switch (user.getRol()) {
+                case Roles.GERENTE:
+                case Roles.CONTADOR:
+                case Roles.ADMIN:
+                    cargarVentana("layout.fxml", "Menú Administrador", stage);
+                    break;
+                case Roles.EMPLEADO:
+                    cargarVentana("layout-empleados.fxml", "Menú Usuario", stage);
+                    break;
             }
-
         } catch (Exception e) {
             mostrarAlerta("Error", "Error al iniciar sesión.");
             e.printStackTrace();
