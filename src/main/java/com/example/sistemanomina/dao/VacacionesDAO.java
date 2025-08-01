@@ -72,11 +72,33 @@ public class VacacionesDAO {
         return lista;
     }
 
+    // ✅ Nuevo método para obtener los días tomados en un año
+    public int obtenerDiasTomadosPorEmpleadoEnAnio(int empleadoId, int anio) throws SQLException {
+        String sql = """
+            SELECT COALESCE(SUM(dias), 0) AS total
+            FROM vacaciones
+            WHERE empleado_id = ? AND YEAR(fecha_inicio) = ?
+        """;
+
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, empleadoId);
+            stmt.setInt(2, anio);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("total");
+                }
+            }
+        }
+        return 0;
+    }
+
     // Actualizar un registro
     public void actualizar(Vacaciones vacaciones) throws SQLException {
         String sql = "UPDATE vacaciones SET empleado_id = ?, fecha_inicio = ?, fecha_fin = ?, dias = ?, aprobada = ? WHERE id = ?";
         try (Connection conn = DatabaseConnection.getInstance().getConnection();
-
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, vacaciones.getEmpleadoId());
@@ -100,7 +122,7 @@ public class VacacionesDAO {
         }
     }
 
-    // ✅ Ahora mapeamos también el nombre y apellido del empleado
+    // ✅ Mapear resultados con nombre completo
     private Vacaciones mapResultSet(ResultSet rs) throws SQLException {
         Vacaciones v = new Vacaciones();
         v.setId(rs.getInt("id"));
@@ -110,7 +132,6 @@ public class VacacionesDAO {
         v.setDias(rs.getInt("dias"));
         v.setAprobada(rs.getBoolean("aprobada"));
 
-        // ✅ Nuevo: Guardamos nombre completo
         String nombre = rs.getString("nombre_empleado");
         String apellido = rs.getString("apellido_empleado");
         v.setNombreEmpleado(nombre + " " + apellido);
@@ -118,3 +139,4 @@ public class VacacionesDAO {
         return v;
     }
 }
+

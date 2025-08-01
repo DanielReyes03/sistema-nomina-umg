@@ -20,8 +20,9 @@ import java.util.List;
 
 public class CrearVacacionesController {
 
-    @FXML private Button BotGuardar;
+    private static final int LIMITE_ANUAL = 15; // ✅ Límite legal de días por año en Guatemala
 
+    @FXML private Button BotGuardar;
     @FXML private Button BotRegresar;
     @FXML private ComboBox<String> ComboEmpleado;  // formato "ID - Nombre Apellido"
     @FXML private DatePicker InputFechaInicio;
@@ -32,10 +33,7 @@ public class CrearVacacionesController {
     private final VacacionesDAO vacacionesDAO = new VacacionesDAO();
     private EmpleadoDAO empleadoDAO;
 
-    // Referencia a VacacionesController para actualizar tabla y pasar datos
     private VacacionesController vacacionesController;
-
-    // Vacaciones para editar (si es null, es creación)
     private Vacaciones vacacionesEditar;
 
     public CrearVacacionesController() {
@@ -52,7 +50,6 @@ public class CrearVacacionesController {
         cargarEmpleados();
         SpinnerDias.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 30, 1));
 
-        // ✅ Si ya tenemos un objeto para editar, rellenar
         if (vacacionesEditar != null) {
             rellenarCamposEdicion();
         }
@@ -82,7 +79,6 @@ public class CrearVacacionesController {
     private void rellenarCamposEdicion() {
         if (vacacionesEditar == null) return;
 
-        // Buscar el empleado para mostrar nombre en combo
         try {
             Empleado emp = empleadoDAO.obtenerEmpleadoPorId(vacacionesEditar.getEmpleadoId());
             if (emp != null) {
@@ -96,7 +92,6 @@ public class CrearVacacionesController {
         InputFechaInicio.setValue(vacacionesEditar.getFechaInicio().toLocalDate());
         InputFechaFin.setValue(vacacionesEditar.getFechaFin().toLocalDate());
         SpinnerDias.getValueFactory().setValue(vacacionesEditar.getDias());
-        // NO ponemos aprobada porque está fija en false
     }
 
     @FXML
@@ -114,24 +109,36 @@ public class CrearVacacionesController {
             LocalDate fechaFin = InputFechaFin.getValue();
             int dias = SpinnerDias.getValue();
 
+            // ✅ Paso 2 y 3: Validar que no exceda los 15 días por año
+            int year = fechaInicio.getYear();
+            int diasTomados = vacacionesDAO.obtenerDiasTomadosPorEmpleadoEnAnio(empleadoId, year);
+
+            if (vacacionesEditar != null) {
+                diasTomados -= vacacionesEditar.getDias(); // Para permitir editar sin duplicar
+            }
+
+            if (diasTomados + dias > LIMITE_ANUAL) {
+                mostrarAlerta("Error", "El empleado ya ha tomado " + diasTomados +
+                        " días de vacaciones en " + year + ". No puede exceder " + LIMITE_ANUAL + " días según la ley de Guatemala.");
+                return;
+            }
+
             if (vacacionesEditar == null) {
-                // Crear nuevo
                 Vacaciones vac = new Vacaciones();
                 vac.setEmpleadoId(empleadoId);
                 vac.setFechaInicio(Date.valueOf(fechaInicio));
                 vac.setFechaFin(Date.valueOf(fechaFin));
                 vac.setDias(dias);
-                vac.setAprobada(false); // Siempre false
+                vac.setAprobada(false);
 
                 vacacionesDAO.insertar(vac);
                 mostrarAlerta("Éxito", "Vacaciones guardadas correctamente.");
             } else {
-                // Actualizar existente
                 vacacionesEditar.setEmpleadoId(empleadoId);
                 vacacionesEditar.setFechaInicio(Date.valueOf(fechaInicio));
                 vacacionesEditar.setFechaFin(Date.valueOf(fechaFin));
                 vacacionesEditar.setDias(dias);
-                vacacionesEditar.setAprobada(false); // Siempre false
+                vacacionesEditar.setAprobada(false);
 
                 vacacionesDAO.actualizar(vacacionesEditar);
                 mostrarAlerta("Éxito", "Vacaciones actualizadas correctamente.");
@@ -139,7 +146,6 @@ public class CrearVacacionesController {
 
             limpiarFormulario();
 
-            // Refrescar tabla en VacacionesController si existe referencia
             if (vacacionesController != null) {
                 vacacionesController.cargarVacaciones();
             }
@@ -179,16 +185,12 @@ public class CrearVacacionesController {
         stage.close();
     }
 
-    // Setter para la referencia al VacacionesController
     public void setVacacionesController(VacacionesController vacacionesController) {
         this.vacacionesController = vacacionesController;
     }
 
-    // Setter para pasar Vacaciones a editar y actualizar formulario
     public void setVacacionesEditar(Vacaciones vacacionesEditar) {
         this.vacacionesEditar = vacacionesEditar;
-        rellenarCamposEdicion(); // ✅ Se llama aquí y también desde initialize()
+        rellenarCamposEdicion();
     }
-
-    }
-
+}
