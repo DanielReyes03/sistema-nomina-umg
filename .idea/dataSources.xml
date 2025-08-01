@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="DataSourceManagerImpl" format="xml" multifile-model="true">
-    <data-source source="LOCAL" name="DB_Nomina" uuid="b9f76c65-5ab4-42dc-887c-cbc0d70bf846">
+    <data-source source="LOCAL" name="Base Nomina" uuid="b9f76c65-5ab4-42dc-887c-cbc0d70bf846">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>

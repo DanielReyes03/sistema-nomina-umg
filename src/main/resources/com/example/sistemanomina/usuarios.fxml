@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="500.0" prefWidth="792.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sistemanomina.controller.UsuarioController">
+
+   <!-- Íconos -->
+   <!-- (omito repetir todos para no alargar, pero todos están bien, puedes dejarlos igual) -->
+
+   <!-- Tabla de empleados -->
+   <TableView fx:id="tblUsuarios" layoutX="138.0" layoutY="99.0" prefHeight="387.0" prefWidth="509.0">
+      <columns>
+         <TableColumn fx:id="colID" prefWidth="67.0" text="ID" />
+         <TableColumn fx:id="colUsuario" prefWidth="134.0" text="Usuario" />
+         <TableColumn fx:id="colRol" prefWidth="122.0" text="Rol" />
+         <TableColumn fx:id="colEmpleadoID" prefWidth="102.0" text="ID Empleado" />
+         <TableColumn fx:id="colEstado" prefWidth="83.0" text="Estado" />
+      </columns>
+   </TableView>
+
+   <!-- Botones de acción -->
+   <Button fx:id="btncrear" layoutX="415.0" layoutY="38.0" onAction="#onbtncrear" prefHeight="35.0" prefWidth="116.0" style="-fx-background-color: #A8D5B9; -fx-background-radius: 10;" text="Crear nuevo" />
+   <Button fx:id="btnactualizar" layoutX="557.0" layoutY="38.0" onAction="#onbtnactualizar" prefHeight="35.0" prefWidth="99.0" style="-fx-background-color: #A8D5B9; -fx-background-radius: 10;" text="Actualizar" />
+   <Button fx:id="btneliminar" layoutX="679.0" layoutY="39.0" onAction="#onbtneliminar" prefHeight="35.0" prefWidth="99.0" style="-fx-background-color: #A8D5B9; -fx-background-radius: 10;" text="Eliminar" />
+   <Button fx:id="btnActualizarTb" layoutX="138.0" layoutY="42.0" onAction="#onbtnActualizarTb" prefHeight="28.0" prefWidth="116.0" text="Actualizar Tabla" textAlignment="CENTER" textOverrun="WORD_ELLIPSIS" AnchorPane.bottomAnchor="430.0" AnchorPane.rightAnchor="538.0">
+      <font>
+         <Font size="13.0" />
+      </font>
+      <cursor>
+         <Cursor fx:constant="DEFAULT" />
+      </cursor>
+      <effect>
+         <ColorAdjust>
+            <input>
+               <DropShadow />
+            </input>
+         </ColorAdjust>
+      </effect></Button>
+   <cursor>
+      <Cursor fx:constant="DEFAULT" />
+   </cursor>
+
+</AnchorPane>
