@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane maxHeight="500.0" maxWidth="750.0" prefHeight="500.0" prefWidth="750.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sistemanomina.controller.ActualizarUsuarioController">
+
+   <!-- Imagenes -->
+   <!-- (Omitidas por brevedad pero puedes mantenerlas si son necesarias) -->
+
+   <!-- Campos de formulario -->
+   <Label layoutX="300.0" layoutY="118.0" text="Nombre de Usuario" />
+   <TextField fx:id="txtNombreUsuario" layoutX="251.0" layoutY="155.0" prefHeight="44.0" prefWidth="200.0" promptText="Ingrese nombre de usuario" style="-fx-background-radius: 10;" />
+
+   <Label layoutX="321.0" layoutY="255.0" text="Contraseña" />
+   <TextField fx:id="txtContra" layoutX="253.0" layoutY="293.0" prefHeight="44.0" prefWidth="200.0" promptText="Ingrese contraseña" style="-fx-background-radius: 10;" />
+
+   <Label layoutX="605.0" layoutY="227.0" text="Rol" />
+
+   <!-- Botones acción -->
+   <Button fx:id="btnguardarC" layoutX="266.0" layoutY="411.0" onAction="#onbtnguardare" prefHeight="44.0" prefWidth="173.0" style="-fx-background-color: #A8D5B9; -fx-background-radius: 10;" text="Guardar Cambios" />
+
+   <!-- Texto superior -->
+   <Text fx:id="MensajeAccion" layoutX="261.0" layoutY="49.0" text="Modificar Usuario">
+      <font><Font size="23.0" /></font>
+   </Text>
+   <ComboBox fx:id="comboRol" layoutX="536.0" layoutY="264.0" prefHeight="44.0" prefWidth="138.0" promptText="Empleado" style="-fx-background-radius: 10;" />
+   <TextField fx:id="txtEstado" layoutX="83.0" layoutY="256.0" prefHeight="44.0" prefWidth="122.0" promptText="Ingrese nombre de usuario" style="-fx-background-radius: 10;" />
+   <Label layoutX="126.0" layoutY="218.0" text="Estado" />
+
+</AnchorPane>
