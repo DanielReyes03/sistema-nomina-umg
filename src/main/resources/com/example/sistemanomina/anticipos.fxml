@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="idempleao" prefHeight="600.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sistemanomina.controller.AnticiposController">
+
+    <Button fx:id="botonconsulta" layoutX="367.0" layoutY="47.0" mnemonicParsing="false" onAction="#btnconsulta" style="-fx-background-radius: 15%; -fx-background-color: #A8D5B4;" text="Consulta" textOverrun="CLIP" />
+
+    <Button fx:id="botonsolicitar" layoutX="456.0" layoutY="47.0" mnemonicParsing="false" onAction="#btnsolicitar" style="-fx-background-radius: 15%; -fx-background-color: #A8D5B4;" text="Solicitar" />
+
+    <Button fx:id="botonmodificar" layoutX="540.0" layoutY="47.0" mnemonicParsing="false" onAction="#modificar" style="-fx-background-radius: 15%; -fx-background-color: #A8D5B4;" text="Modificar" />
+
+    <ComboBox fx:id="dropboxnombresemp" layoutX="187.0" layoutY="47.0" prefWidth="150.0" />
+
+    <TableView fx:id="tabladeanticipos" layoutX="39.0" layoutY="93.0" prefHeight="350.0" prefWidth="700.0">
+        <columns>
+            <TableColumn fx:id="fechaanticipo" prefWidth="150.0" text="Fecha" />
+            <TableColumn fx:id="monto" prefWidth="100.0" text="Monto" />
+            <TableColumn fx:id="motivo" prefWidth="350.0" text="Motivo" />
+            <TableColumn fx:id="saldopendiente" prefWidth="101.0" text="Saldo Pendiente" />
+        </columns>
+    </TableView>
+
+    <Label layoutX="39.0" layoutY="49.0" text="Nombre Empleado">
+        <font>
+            <Font size="15.0" />
+        </font>
+    </Label>
+   <Button fx:id="botoneliminar" layoutX="630.0" layoutY="47.0" mnemonicParsing="false" onAction="#eliminar" style="-fx-background-radius: 15%; -fx-background-color: #A8D5B4;" text="Eliminar" />
+
+</AnchorPane>

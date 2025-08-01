@@ -117,4 +117,10 @@ public class Empleado {
     public void setNombreDepartamento(String nombreDepartamento) {
         this.nombreDepartamento = nombreDepartamento;
     }
+
+    // 👇 Este método es clave para que el ComboBox muestre nombres legibles
+    @Override
+    public String toString() {
+        return nombre + " " + apellido;
+    }
 }
