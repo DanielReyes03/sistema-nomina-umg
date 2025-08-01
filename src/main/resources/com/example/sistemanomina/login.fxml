@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17.0.2-ea"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sistemanomina.controller.LoginController">
+   <Pane prefHeight="100.0" prefWidth="1000.0" style="-fx-background-color: #A1D8E8;"/>
+   <Text layoutX="380.0" layoutY="60.0" strokeType="OUTSIDE" strokeWidth="0.0" text="SISTEMA DE NOMINA"
+         textAlignment="CENTER">
+      <font>
+         <Font name="System Bold" size="35.0"/>
+      </font>
+   </Text>
+   <Text layoutX="400.0" layoutY="190.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Usuario">
+      <font>
+         <Font size="15.0"/>
+      </font>
+   </Text>
+   <TextField fx:id="loginUsuario" accessibleText="Usuario" layoutX="399.0" layoutY="200.0" prefHeight="40.0" prefWidth="250.0"
+              promptText="Ingresa tu usuario" style="-fx-background-radius: 10;"/>
+   <Text layoutX="400.0" layoutY="300.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Contraseña">
+      <font>
+         <Font size="15.0"/>
+      </font>
+   </Text>
+   <PasswordField fx:id="loginContrasena" layoutX="400.0" layoutY="310.0" prefHeight="40.0"
+                  prefWidth="250.0" promptText="Ingresa tu contraseña" style="-fx-background-radius: 10;"/>
+   <Button fx:id="loginBoton" layoutX="424.0" layoutY="400.0" mnemonicParsing="false" prefHeight="50.0"
+           prefWidth="200.0" style="-fx-background-color: #A8D5BA; -fx-border-radius: 50; -fx-background-radius: 10;"
+           text="Iniciar Sesion"/>
+</AnchorPane>

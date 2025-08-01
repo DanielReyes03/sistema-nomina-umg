@@ -43,7 +43,7 @@
       <artifactId>bootstrapfx-core</artifactId>
       <version>0.4.0</version>
     </dependency>
-<dependency>
+    <dependency>
       <groupId>org.junit.jupiter</groupId>
       <artifactId>junit-jupiter-api</artifactId>
       <version>${junit.version}</version>
@@ -76,7 +76,7 @@
             <!-- Default configuration for running with: mvn clean javafx:run -->
             <id>default-cli</id>
             <configuration>
-              <mainClass>com.example.sistemanomina/com.example.sistemanomina.HelloApplication</mainClass>
+              <mainClass>com.example.sistemanomina/com.example.sistemanomina.Main</mainClass>
               <launcher>app</launcher>
               <jlinkZipName>app</jlinkZipName>
               <jlinkImageName>app</jlinkImageName>
