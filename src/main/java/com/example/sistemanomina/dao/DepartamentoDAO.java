@@ -74,6 +74,8 @@ public class DepartamentoDAO {
                 );
                 lista.add(d);
             }
+        }catch (SQLException e) {
+            System.out.println("Error al obtener todos los departamentos: " + e.getMessage());
         }
         return lista;
     }

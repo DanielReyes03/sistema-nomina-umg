@@ -18,7 +18,7 @@ public class Usuario {
     }
 
     public Usuario(String username, String passwordHash, String rol, Integer empleadoId, Boolean estado) {
-        this(0, username, passwordHash, rol, empleadoId, estado);
+        this(0, username, passwordHash,rol, empleadoId, estado);
     }
 
     // Getters y setters...

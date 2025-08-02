@@ -17,6 +17,11 @@ public class Departamento {
         this.descripcion = descripcion;
     }
 
+    @Override
+    public String toString() {
+        return nombre;
+    }
+
     public int getId() { return id; }
 
     public void setId(int id) { this.id = id;}

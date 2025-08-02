@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sistemanomina.controller.CrearVacacionesController">
+   <Button fx:id="BotGuardar" layoutX="328.0" layoutY="483.0" mnemonicParsing="false" onAction="#botguardar" prefHeight="54.0" prefWidth="229.0" style="-fx-background-color: #A8D5B9; -fx-background-radius: 10;" text="Guardar">
+      <font>
+         <Font size="24.0" />
+      </font></Button>
+   <Button fx:id="BotRegresar" layoutX="603.0" layoutY="74.0" mnemonicParsing="false" onAction="#botregresar" prefHeight="44.0" prefWidth="126.0" style="-fx-background-color: #A8D5B9; -fx-background-radius: 10;" text="Regresar" />
+   <Text fx:id="MensajeAccion" layoutX="96.0" layoutY="109.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Agendar Nuevas Vacaciones" wrappingWidth="405.193359375">
+      <font>
+         <Font size="31.0" />
+      </font>
+   </Text>
+   <Text layoutX="96.0" layoutY="162.0" strokeType="OUTSIDE" strokeWidth="0.0" text=" Empleado" wrappingWidth="99.0">
+      <font>
+         <Font size="20.0" />
+      </font>
+   </Text>
+   <Text layoutX="94.0" layoutY="281.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fecha Inicio">
+      <font>
+         <Font size="20.0" />
+      </font>
+   </Text>
+   <Text layoutX="340.0" layoutY="280.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Fecha Fin">
+      <font>
+         <Font size="20.0" />
+      </font>
+   </Text>
+   <ComboBox fx:id="ComboEmpleado" layoutX="96.0" layoutY="179.0" prefHeight="30.0" prefWidth="188.0" />
+   <Text layoutX="94.0" layoutY="380.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Dias">
+      <font>
+         <Font size="20.0" />
+      </font>
+   </Text>
+   <DatePicker fx:id="InputFechaInicio" layoutX="90.0" layoutY="307.0" prefHeight="30.0" prefWidth="200.0" />
+   <DatePicker fx:id="InputFechaFin" layoutX="333.0" layoutY="307.0" prefHeight="30.0" prefWidth="200.0" />
+   <Spinner fx:id="SpinnerDias" layoutX="95.0" layoutY="403.0" prefHeight="33.0" prefWidth="200.0" />
+</AnchorPane>

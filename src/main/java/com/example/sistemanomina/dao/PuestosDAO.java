@@ -65,6 +65,8 @@ public class PuestosDAO {
                     );
                 }
             }
+        }catch (SQLException e) {
+            System.out.println("Error al obtener puesto por ID: " + e.getMessage());
         }
         return null;
     }
@@ -102,5 +104,29 @@ public class PuestosDAO {
             System.out.println("Error al verificar existencia del puesto: " + e.getMessage());
         }
         return false;
+    }
+
+    public List<Puestos> obtenerPorDepartamento(Integer departamentoId) {
+        List<Puestos> lista = new ArrayList<>();
+        String sql = "SELECT p.*, d.nombre AS nombre_departamento FROM puestos p LEFT JOIN departamentos d ON p.departamento_id = d.id WHERE p.departamento_id = ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, departamentoId);
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Puestos p = new Puestos(
+                            rs.getInt("id"),
+                            rs.getString("nombre"),
+                            rs.getString("descripcion"),
+                            rs.getString("rango_salarios"),
+                            rs.getInt("departamento_id"),
+                            rs.getString("nombre_departamento")
+                    );
+                    lista.add(p);
+                }
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al obtener puestos por departamento: " + e.getMessage());
+        }
+        return lista;
     }
 }
