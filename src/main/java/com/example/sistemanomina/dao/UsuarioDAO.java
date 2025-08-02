@@ -1,6 +1,7 @@
-// src/main/java/com/example/sistemanomina/dao/UsuarioDAO.java
 package com.example.sistemanomina.dao;
 
+import java.util.ArrayList;
+import java.util.List;
 import com.example.sistemanomina.model.Usuario;
 import java.sql.*;
 
@@ -46,12 +47,56 @@ public class UsuarioDAO {
             stmt.setString(1, usuario.getUsername());
             stmt.setString(2, usuario.getPasswordHash());
             stmt.setString(3, usuario.getRol());
+
             if (usuario.getEmpleadoId() != null) {
                 stmt.setInt(4, usuario.getEmpleadoId());
             } else {
                 stmt.setNull(4, Types.INTEGER);
             }
+
             stmt.setBoolean(5, usuario.getEstado());
+            stmt.executeUpdate();
+        }
+    }
+
+    public List<Usuario> listarUsuarios() throws SQLException {
+        List<Usuario> usuarios = new ArrayList<>();
+        String sql = "SELECT * FROM usuarios";
+
+        try (Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                Usuario usuario = new Usuario(
+                        rs.getInt("id"),
+                        rs.getString("username"),
+                        rs.getString("password_hash"),
+                        rs.getString("rol"),
+                        rs.getObject("empleado_id") != null ? rs.getInt("empleado_id") : null,
+                        rs.getBoolean("estado")
+                );
+                usuarios.add(usuario);
+            }
+        }
+
+        return usuarios;
+    }
+
+    public void actualizarUsuario(Usuario usuario) throws SQLException {
+        String sql = "UPDATE usuarios SET username = ?, password_hash = ?, rol = ?, estado = ? WHERE id = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setString(1, usuario.getUsername());
+            stmt.setString(2, usuario.getPasswordHash());
+            stmt.setString(3, usuario.getRol());
+            stmt.setBoolean(4, usuario.getEstado());
+            stmt.setInt(5, usuario.getId());
+            stmt.executeUpdate();
+        }
+    }
+
+    public void eliminarUsuario(int id) throws SQLException {
+        String sql = "DELETE FROM usuarios WHERE id = ?";
+        try (PreparedStatement stmt = conn.prepareStatement(sql)) {
+            stmt.setInt(1, id);
             stmt.executeUpdate();
         }
     }
