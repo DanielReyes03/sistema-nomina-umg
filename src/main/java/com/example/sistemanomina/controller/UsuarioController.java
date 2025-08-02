@@ -86,16 +86,15 @@ public class UsuarioController {
                 FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/sistemanomina/actualizar-usuario.fxml"));
                 Parent root = loader.load();
 
-                // Pasar el usuario al controlador de la vista de actualización
                 ActualizarUsuarioController controller = loader.getController();
                 controller.setUsuario(seleccionado);
 
                 Stage stage = new Stage();
                 stage.setTitle("Actualizar usuario");
                 stage.setScene(new Scene(root));
-                stage.showAndWait();  // espera a que cierre para recargar
+                stage.showAndWait();
 
-                cargarUsuarios(); // recarga la tabla después de actualizar
+                cargarUsuarios();
             } catch (Exception e) {
                 e.printStackTrace();
                 mostrarAlerta("Error", "No se pudo abrir la vista de actualización.");
