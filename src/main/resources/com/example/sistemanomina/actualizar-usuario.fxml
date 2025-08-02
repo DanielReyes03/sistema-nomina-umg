@@ -26,7 +26,16 @@
       <font><Font size="23.0" /></font>
    </Text>
    <ComboBox fx:id="comboRol" layoutX="536.0" layoutY="264.0" prefHeight="44.0" prefWidth="138.0" promptText="Empleado" style="-fx-background-radius: 10;" />
-   <TextField fx:id="txtEstado" layoutX="83.0" layoutY="256.0" prefHeight="44.0" prefWidth="122.0" promptText="Ingrese nombre de usuario" style="-fx-background-radius: 10;" />
-   <Label layoutX="126.0" layoutY="218.0" text="Estado" />
+   <Label layoutX="98.0" layoutY="245.0" text="Estado">
+      <font>
+         <Font size="15.0" />
+      </font></Label>
+   <RadioButton fx:id="rbActivo" layoutX="89.0" layoutY="285.0" mnemonicParsing="false" text="Activo">
+      <toggleGroup>
+         <ToggleGroup fx:id="estadoGroup" />
+      </toggleGroup></RadioButton>
+   <RadioButton fx:id="rbInactivo" layoutX="89.0" layoutY="315.0" mnemonicParsing="false" text="Inactivo" toggleGroup="$estadoGroup" />
+   <Accordion />
+   <BorderPane prefHeight="200.0" prefWidth="200.0" />
 
 </AnchorPane>
