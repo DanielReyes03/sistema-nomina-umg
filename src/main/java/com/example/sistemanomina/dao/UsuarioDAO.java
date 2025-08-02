@@ -30,7 +30,7 @@ public class UsuarioDAO {
                     return new Usuario(
                             rs.getInt("id"),
                             rs.getString("username"),
-                            rs.getString("password_hash"), // ✅ correcto orden
+                            rs.getString("password_hash"),
                             rs.getString("rol"),
                             rs.getObject("empleado_id") != null ? rs.getInt("empleado_id") : null,
                             rs.getBoolean("estado")
@@ -45,7 +45,7 @@ public class UsuarioDAO {
         String sql = "INSERT INTO usuarios (username, password_hash, rol, empleado_id, estado) VALUES (?, ?, ?, ?, ?)";
         try (PreparedStatement stmt = conn.prepareStatement(sql)) {
             stmt.setString(1, usuario.getUsername());
-            stmt.setString(2, usuario.getPasswordHash()); // ✅ ahora sí se guarda el hash
+            stmt.setString(2, usuario.getPasswordHash());
             stmt.setString(3, usuario.getRol());
 
             if (usuario.getEmpleadoId() != null) {
@@ -69,7 +69,7 @@ public class UsuarioDAO {
                 Usuario usuario = new Usuario(
                         rs.getInt("id"),
                         rs.getString("username"),
-                        rs.getString("password_hash"), // ✅ aquí también hay que cargarla
+                        rs.getString("password_hash"),
                         rs.getString("rol"),
                         rs.getObject("empleado_id") != null ? rs.getInt("empleado_id") : null,
                         rs.getBoolean("estado")

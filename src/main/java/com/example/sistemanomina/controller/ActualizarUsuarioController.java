@@ -74,7 +74,7 @@ public class ActualizarUsuarioController {
 
             mostrarAlertaInformacion("Éxito", "Usuario actualizado correctamente.");
 
-            // 🔒 Cierra la ventana actual
+            // Cierra la ventana actual
             Stage stage = (Stage) txtNombreUsuario.getScene().getWindow();
             stage.close();
 
@@ -106,7 +106,7 @@ public class ActualizarUsuarioController {
     }
 
     private void mostrarAlerta(String titulo, String mensaje) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION); // Asegúrate de que sea INFORMATION
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titulo);
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
