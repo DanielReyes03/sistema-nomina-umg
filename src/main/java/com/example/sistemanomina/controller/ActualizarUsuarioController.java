@@ -16,6 +16,9 @@ import java.sql.Connection;
 
 public class ActualizarUsuarioController {
 
+    @FXML private ToggleGroup estadoGroup;
+    @FXML private RadioButton rbActivo;
+    @FXML private RadioButton rbInactivo;
     @FXML private TextField txtNombreUsuario;
     @FXML private TextField txtContra;
     @FXML private ComboBox<String> comboRol;
@@ -32,8 +35,15 @@ public class ActualizarUsuarioController {
         txtNombreUsuario.setText(usuarioSeleccionado.getUsername());
         txtContra.setText(usuarioSeleccionado.getPasswordHash());
         comboRol.setValue(usuarioSeleccionado.getRol());
-        txtEstado.setText(usuarioSeleccionado.getEstado() ? "1" : "0");
+
+        // Marcamos el RadioButton según el estado
+        if (usuarioSeleccionado.getEstado() != null && usuarioSeleccionado.getEstado()) {
+            rbActivo.setSelected(true);
+        } else {
+            rbInactivo.setSelected(true);
+        }
     }
+
 
     @FXML
     public void initialize() {
@@ -52,7 +62,8 @@ public class ActualizarUsuarioController {
             String nuevoUsername = txtNombreUsuario.getText();
             String nuevaContra = txtContra.getText();
             String nuevoRol = comboRol.getValue();
-            Boolean nuevoEstado = "1".equals(txtEstado.getText());
+            Boolean nuevoEstado = rbActivo.isSelected(); // true si está activo
+
 
             usuarioSeleccionado.setUsername(nuevoUsername);
             usuarioSeleccionado.setPasswordHash(PasswordUtil.hashPassword(nuevaContra));
