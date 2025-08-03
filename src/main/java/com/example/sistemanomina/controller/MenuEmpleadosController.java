@@ -39,7 +39,7 @@ public class MenuEmpleadosController {
 
     @FXML
     public void abrirMenuHorasExtra() {
-        abrirVentana("horasextra.fxml", "Horas Extra");
+        abrirVentana("horas-extra.fxml", "Horas Extra");
     }
 
     @FXML

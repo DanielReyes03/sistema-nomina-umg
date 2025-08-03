@@ -12,5 +12,6 @@ module com.example.sistemanomina {
 
     opens com.example.sistemanomina to javafx.fxml;
     opens com.example.sistemanomina.controller to javafx.fxml;
+    opens com.example.sistemanomina.model to javafx.base;   // <--- esta línea es la importante
     exports com.example.sistemanomina;
 }

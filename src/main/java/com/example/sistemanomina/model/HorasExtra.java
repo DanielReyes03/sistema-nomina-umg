@@ -1,4 +1,4 @@
-package model;
+package com.example.sistemanomina.model;
 
 import java.sql.Date;
 
@@ -10,75 +10,30 @@ public class HorasExtra {
     private String motivo;
     private boolean aprobado;
 
-    public HorasExtra() {
-    }
+    // ✅ Nuevo campo para mostrar nombre y apellido del empleado
+    private String nombreEmpleado;
 
-    public HorasExtra(int id, int empleadoId, Date fecha, int horas, String motivo, boolean aprobado) {
-        this.id = id;
-        this.empleadoId = empleadoId;
-        this.fecha = fecha;
-        this.horas = horas;
-        this.motivo = motivo;
-        this.aprobado = aprobado;
-    }
+    public HorasExtra() {}
 
-    public int getId() {
-        return id;
-    }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public int getEmpleadoId() { return empleadoId; }
+    public void setEmpleadoId(int empleadoId) { this.empleadoId = empleadoId; }
 
-    public int getEmpleadoId() {
-        return empleadoId;
-    }
+    public Date getFecha() { return fecha; }
+    public void setFecha(Date fecha) { this.fecha = fecha; }
 
-    public void setEmpleadoId(int empleadoId) {
-        this.empleadoId = empleadoId;
-    }
+    public int getHoras() { return horas; }
+    public void setHoras(int horas) { this.horas = horas; }
 
-    public Date getFecha() {
-        return fecha;
-    }
+    public String getMotivo() { return motivo; }
+    public void setMotivo(String motivo) { this.motivo = motivo; }
 
-    public void setFecha(Date fecha) {
-        this.fecha = fecha;
-    }
+    public boolean isAprobado() { return aprobado; }
+    public void setAprobado(boolean aprobado) { this.aprobado = aprobado; }
 
-    public int getHoras() {
-        return horas;
-    }
-
-    public void setHoras(int horas) {
-        this.horas = horas;
-    }
-
-    public String getMotivo() {
-        return motivo;
-    }
-
-    public void setMotivo(String motivo) {
-        this.motivo = motivo;
-    }
-
-    public boolean isAprobado() {
-        return aprobado;
-    }
-
-    public void setAprobado(boolean aprobado) {
-        this.aprobado = aprobado;
-    }
-
-    @Override
-    public String toString() {
-        return "HorasExtra{" +
-                "id=" + id +
-                ", empleadoId=" + empleadoId +
-                ", fecha=" + fecha +
-                ", horas=" + horas +
-                ", motivo='" + motivo + '\'' +
-                ", aprobado=" + aprobado +
-                '}';
-    }
+    // ✅ Getter y Setter para el nombre completo del empleado
+    public String getNombreEmpleado() { return nombreEmpleado; }
+    public void setNombreEmpleado(String nombreEmpleado) { this.nombreEmpleado = nombreEmpleado; }
 }
