@@ -121,8 +121,32 @@ public class HorasExtraController {
     /** ✅ Botón ACTUALIZAR */
     @FXML
     private void botactualizar(ActionEvent event) {
-        cargarDatosTabla();
+        HorasExtra seleccion = InputTablaVacaciones.getSelectionModel().getSelectedItem();
+        if (seleccion != null) {
+            try {
+                FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/sistemanomina/crear-horasextra.fxml"));
+                Parent root = loader.load();
+
+                CrearHorasExtraController crearController = loader.getController();
+                crearController.setHorasExtraController(this);
+
+                // ✅ AHORA SÍ: Pasar el registro seleccionado
+                crearController.setRegistroEditar(seleccion);
+
+                Stage stage = new Stage();
+                stage.setTitle("Editar Horas Extra");
+                stage.setScene(new Scene(root));
+                stage.show();
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        } else {
+            mostrarAlerta(Alert.AlertType.WARNING, "Seleccione un registro para editar.");
+        }
     }
+
+
 
     /** ✅ Botón ELIMINAR */
     @FXML

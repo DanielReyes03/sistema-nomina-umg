@@ -13,30 +13,37 @@
             <Insets top="20" bottom="20" left="30" right="30"/>
          </padding>
          <Label text="Registrar Horas Extra" style="-fx-font-size: 22px; -fx-font-weight: bold;" />
+
          <HBox spacing="10" alignment="CENTER_LEFT">
             <Label text="Empleado:" />
             <ComboBox fx:id="ComboEmpleado" prefWidth="300" />
          </HBox>
+
          <HBox spacing="10" alignment="CENTER_LEFT">
             <Label text="Fecha:" />
             <DatePicker fx:id="InputFecha" prefWidth="300" />
          </HBox>
+
          <HBox spacing="10" alignment="CENTER_LEFT">
             <Label text="Horas:" />
             <Spinner fx:id="SpinnerHoras" prefWidth="100" />
          </HBox>
+
          <HBox spacing="10" alignment="CENTER_LEFT">
             <Label text="Motivo:" />
             <TextArea fx:id="TxtaMotivo" prefRowCount="3" prefWidth="300" wrapText="true"/>
          </HBox>
+
          <HBox spacing="10" alignment="CENTER_LEFT">
             <Label text="Aprobado:" />
             <CheckBox fx:id="chbAprobada" />
          </HBox>
+
          <HBox spacing="20" alignment="CENTER">
             <Button fx:id="btnGuardar" text="Guardar" onAction="#botguardar" />
             <Button fx:id="btnRegresar" text="Regresar" onAction="#botregresar" />
          </HBox>
+
          <Label fx:id="MensajeAccion" text="" textFill="green" />
       </VBox>
    </children>

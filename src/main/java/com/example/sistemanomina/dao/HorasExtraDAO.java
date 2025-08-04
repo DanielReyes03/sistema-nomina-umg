@@ -1,7 +1,6 @@
 package com.example.sistemanomina.dao;
 
 import com.example.sistemanomina.model.HorasExtra;
-
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
@@ -42,7 +41,6 @@ public class HorasExtraDAO {
                 h.setId(rs.getInt("id"));
                 h.setEmpleadoId(rs.getInt("empleado_id"));
 
-                // ✅ Asignar nombre y apellido del empleado
                 String nombreCompleto = rs.getString("nombre") + " " + rs.getString("apellido");
                 h.setNombreEmpleado(nombreCompleto);
 
@@ -61,6 +59,20 @@ public class HorasExtraDAO {
         String sql = "DELETE FROM horas_extra WHERE id = ?";
         try (PreparedStatement ps = connection.prepareStatement(sql)) {
             ps.setInt(1, id);
+            return ps.executeUpdate() > 0;
+        }
+    }
+
+    // ✅ Actualizar horas extra
+    public boolean actualizarHorasExtra(HorasExtra h) throws SQLException {
+        String sql = "UPDATE horas_extra SET empleado_id = ?, fecha = ?, horas = ?, motivo = ?, aprobado = ? WHERE id = ?";
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, h.getEmpleadoId());
+            ps.setDate(2, h.getFecha());
+            ps.setInt(3, h.getHoras());
+            ps.setString(4, h.getMotivo());
+            ps.setBoolean(5, h.isAprobado());
+            ps.setInt(6, h.getId());
             return ps.executeUpdate() > 0;
         }
     }

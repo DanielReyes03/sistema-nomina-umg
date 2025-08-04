@@ -2,115 +2,127 @@ package com.example.sistemanomina.controller;
 
 import com.example.sistemanomina.dao.EmpleadoDAO;
 import com.example.sistemanomina.dao.HorasExtraDAO;
-import com.example.sistemanomina.db.DatabaseConnection;
 import com.example.sistemanomina.model.Empleado;
 import com.example.sistemanomina.model.HorasExtra;
-import javafx.collections.FXCollections;
-import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
 import java.sql.Connection;
 import java.sql.Date;
-import java.sql.SQLException;
-import java.time.LocalDate;
 import java.util.List;
 
 public class CrearHorasExtraController {
 
-    @FXML private ComboBox<String> ComboEmpleado; // "ID - Nombre Apellido"
+    @FXML private ComboBox<Empleado> ComboEmpleado;
     @FXML private DatePicker InputFecha;
     @FXML private Spinner<Integer> SpinnerHoras;
     @FXML private TextArea TxtaMotivo;
     @FXML private CheckBox chbAprobada;
     @FXML private Button btnGuardar;
     @FXML private Button btnRegresar;
-    @FXML private Label MensajeAccion;
 
     private HorasExtraDAO horasExtraDAO;
     private EmpleadoDAO empleadoDAO;
+    private HorasExtraController horasExtraController;
+    private HorasExtra registroEditando;
+
     private Connection conn;
 
     @FXML
     public void initialize() {
         try {
-            conn = DatabaseConnection.getInstance().getConnection();
+            conn = com.example.sistemanomina.db.DatabaseConnection.getInstance().getConnection();
             horasExtraDAO = new HorasExtraDAO(conn);
             empleadoDAO = new EmpleadoDAO(conn);
 
-            cargarEmpleados();
-
-            SpinnerValueFactory<Integer> valueFactory = new SpinnerValueFactory.IntegerSpinnerValueFactory(0, 12, 0);
-            SpinnerHoras.setValueFactory(valueFactory);
-
-        } catch (SQLException e) {
-            mostrarMensaje("❌ Error al conectar con la base de datos.");
-            e.printStackTrace();
-        }
-    }
-
-    private void cargarEmpleados() {
-        try {
+            // ✅ Cargar empleados desde la BD
             List<Empleado> empleados = empleadoDAO.obtenerEmpleados();
-            ObservableList<String> opciones = FXCollections.observableArrayList();
+            ComboEmpleado.getItems().addAll(empleados);
 
-            for (Empleado emp : empleados) {
-                String texto = emp.getId() + " - " + emp.getNombre() + " " + emp.getApellido();
-                opciones.add(texto);
-            }
+            // ✅ Mostrar ID + Nombre + Apellido
+            ComboEmpleado.setCellFactory(lv -> new ListCell<>() {
+                @Override
+                protected void updateItem(Empleado empleado, boolean empty) {
+                    super.updateItem(empleado, empty);
+                    setText(empty || empleado == null ? "" :
+                            empleado.getId() + " - " + empleado.getNombre() + " " + empleado.getApellido());
+                }
+            });
+            ComboEmpleado.setButtonCell(new ListCell<>() {
+                @Override
+                protected void updateItem(Empleado empleado, boolean empty) {
+                    super.updateItem(empleado, empty);
+                    setText(empty || empleado == null ? "" :
+                            empleado.getId() + " - " + empleado.getNombre() + " " + empleado.getApellido());
+                }
+            });
 
-            ComboEmpleado.setItems(opciones);
+            // ✅ Spinner de horas
+            SpinnerHoras.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 24, 1));
+
         } catch (Exception e) {
-            mostrarMensaje("❌ Error al cargar empleados.");
             e.printStackTrace();
         }
     }
-
-@FXML
-    private void botguardar() {
-        try {
-            String seleccionado = ComboEmpleado.getValue();
-            if (seleccionado == null || InputFecha.getValue() == null || TxtaMotivo.getText().isEmpty() || SpinnerHoras.getValue() <= 0) {
-                mostrarMensaje("⚠️ Complete todos los campos.");
-                return;
-            }
-
-            int empleadoId = Integer.parseInt(seleccionado.split(" - ")[0]);
-            LocalDate fecha = InputFecha.getValue();
-            int horas = SpinnerHoras.getValue();
-            String motivo = TxtaMotivo.getText();
-            boolean aprobado = chbAprobada.isSelected();
-
-            HorasExtra h = new HorasExtra();
-            h.setEmpleadoId(empleadoId);
-            h.setFecha(Date.valueOf(fecha));
-            h.setHoras(horas);
-            h.setMotivo(motivo);
-            h.setAprobado(aprobado);
-
-            horasExtraDAO.agregarHorasExtra(h);
-            mostrarMensaje("✅ Hora extra guardada correctamente.");
-
-            if (horasExtraController != null) {
-                horasExtraController.actualizarTabla();
-            }
-
-            limpiarFormulario();
-
-        } catch (Exception e) {
-            mostrarMensaje("❌ Error al guardar.");
-            e.printStackTrace();
-        }
-    }
-
-    private HorasExtraController horasExtraController;
 
     public void setHorasExtraController(HorasExtraController controller) {
         this.horasExtraController = controller;
     }
 
+    // ✅ Para editar registro existente
+    public void setRegistroEditar(HorasExtra registro) {
+        this.registroEditando = registro;
+        if (registro != null) {
+            for (Empleado emp : ComboEmpleado.getItems()) {
+                if (emp.getId() == registro.getEmpleadoId()) {
+                    ComboEmpleado.getSelectionModel().select(emp);
+                    break;
+                }
+            }
 
+            InputFecha.setValue(registro.getFecha().toLocalDate());
+            SpinnerHoras.getValueFactory().setValue(registro.getHoras());
+            TxtaMotivo.setText(registro.getMotivo());
+            chbAprobada.setSelected(registro.isAprobado());
+        }
+    }
+
+    @FXML
+    private void botguardar() {
+        try {
+            Empleado empleadoSeleccionado = ComboEmpleado.getValue();
+            if (empleadoSeleccionado == null) {
+                mostrarAlerta(Alert.AlertType.WARNING, "Seleccione un empleado.");
+                return;
+            }
+
+            HorasExtra h = new HorasExtra();
+            h.setEmpleadoId(empleadoSeleccionado.getId());
+            h.setFecha(Date.valueOf(InputFecha.getValue()));
+            h.setHoras(SpinnerHoras.getValue());
+            h.setMotivo(TxtaMotivo.getText());
+            h.setAprobado(chbAprobada.isSelected());
+
+            if (registroEditando != null) {
+                h.setId(registroEditando.getId());
+                horasExtraDAO.actualizarHorasExtra(h);
+            } else {
+                horasExtraDAO.agregarHorasExtra(h);
+            }
+
+            if (horasExtraController != null) {
+                horasExtraController.actualizarTabla();
+            }
+
+            Stage stage = (Stage) btnGuardar.getScene().getWindow();
+            stage.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            mostrarAlerta(Alert.AlertType.ERROR, "Error al guardar el registro.");
+        }
+    }
 
     @FXML
     private void botregresar() {
@@ -118,15 +130,8 @@ public class CrearHorasExtraController {
         stage.close();
     }
 
-    private void mostrarMensaje(String mensaje) {
-        MensajeAccion.setText(mensaje);
-    }
-
-    private void limpiarFormulario() {
-        ComboEmpleado.setValue(null);
-        InputFecha.setValue(null);
-        SpinnerHoras.getValueFactory().setValue(0);
-        TxtaMotivo.clear();
-        chbAprobada.setSelected(false);
+    private void mostrarAlerta(Alert.AlertType tipo, String mensaje) {
+        Alert alert = new Alert(tipo, mensaje, ButtonType.OK);
+        alert.showAndWait();
     }
 }
