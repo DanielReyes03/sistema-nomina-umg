@@ -16,8 +16,7 @@ public class VacacionesDAO {
     // Crear un nuevo registro
     public void insertar(Vacaciones vacaciones) throws SQLException {
         String sql = "INSERT INTO vacaciones (empleado_id, fecha_inicio, fecha_fin, dias, aprobada) VALUES (?, ?, ?, ?, ?)";
-        try (Connection conn = DatabaseConnection.getInstance().getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
+        try (PreparedStatement stmt = connection.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
             stmt.setInt(1, vacaciones.getEmpleadoId());
             stmt.setDate(2, vacaciones.getFechaInicio());
@@ -65,8 +64,7 @@ public class VacacionesDAO {
             JOIN empleados e ON v.empleado_id = e.id
         """;
 
-        try (Connection conn = DatabaseConnection.getInstance().getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql);
+        try (PreparedStatement stmt = connection.prepareStatement(sql);
              ResultSet rs = stmt.executeQuery()) {
 
             while (rs.next()) {
@@ -102,8 +100,7 @@ public class VacacionesDAO {
     // Actualizar un registro
     public void actualizar(Vacaciones vacaciones) throws SQLException {
         String sql = "UPDATE vacaciones SET empleado_id = ?, fecha_inicio = ?, fecha_fin = ?, dias = ?, aprobada = ? WHERE id = ?";
-        try (Connection conn = DatabaseConnection.getInstance().getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 
             stmt.setInt(1, vacaciones.getEmpleadoId());
             stmt.setDate(2, vacaciones.getFechaInicio());
@@ -118,8 +115,7 @@ public class VacacionesDAO {
 
     public void eliminar(int id) throws SQLException {
         String sql = "DELETE FROM vacaciones WHERE id = ?";
-        try (Connection conn = DatabaseConnection.getInstance().getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
 
             stmt.setInt(1, id);
             stmt.executeUpdate();

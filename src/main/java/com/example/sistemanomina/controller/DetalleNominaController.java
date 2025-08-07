@@ -52,8 +52,11 @@ public class DetalleNominaController {
         try {
             Connection conn = DatabaseConnection.getInstance().getConnection();
             detalleNominaDAO = new DetalleNominaDAO(conn);
-
-            detallesNomina = FXCollections.observableArrayList(detalleNominaDAO.obtenerTodos());
+            if (nomina == null) {
+                // mostrarAlerta("Error", "No se ha seleccionado una nómina válida.");
+                return;
+            }
+            detallesNomina = FXCollections.observableArrayList(detalleNominaDAO.obtenerDetallePorNominaId(nomina.getId()));
 
             colID.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
             colIdNomina.setCellValueFactory(cellData -> new SimpleIntegerProperty(cellData.getValue().getNominaId()).asObject());
@@ -80,6 +83,12 @@ public class DetalleNominaController {
 
     public void setNomina(Nomina nomina) {
         this.nomina = nomina;
+        if (nomina != null) {
+            initialize();
+        } else {
+            mostrarAlerta("Error", "No se ha seleccionado una nómina válida.");
+        }
+
     }
 
     private void mostrarAlerta(String titulo, String mensaje) {

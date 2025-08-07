@@ -82,4 +82,34 @@ public class DetalleNominaDAO {
         return lista;
     }
 
+
+    public List<DetalleNomina> obtenerDetallePorNominaId(Integer nominaId) throws SQLException {
+        List<DetalleNomina> lista = new ArrayList<>();
+        String sql = "SELECT dn.*, CONCAT(e.nombre, ' ', e.apellido) AS nombre_empleado " +
+                "FROM detalles_nomina dn " +
+                "INNER JOIN empleados e ON dn.empleado_id = e.id" +
+                " WHERE dn.nomina_id = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, nominaId);
+            ResultSet rs = pstmt.executeQuery();
+            while (rs.next()) {
+                DetalleNomina d = new DetalleNomina(
+                        rs.getInt("id"),
+                        rs.getInt("nomina_id"),
+                        rs.getInt("empleado_id"),
+                        rs.getInt("ausencias"),
+                        rs.getInt("dias_laborados"),
+                        rs.getDouble("percepciones"),
+                        rs.getDouble("deducciones"),
+                        rs.getDouble("sueldo_liquido"),
+                        rs.getString("nombre_empleado") // Nuevo campo para el nombre completo
+                );
+                lista.add(d);
+            }
+        } catch (SQLException e) {
+            System.out.println("Error al obtener todos los detalles de nómina: " + e.getMessage());
+        }
+        return lista;
+    }
+
 }

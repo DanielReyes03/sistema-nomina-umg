@@ -42,6 +42,7 @@ public class CrearVacacionesController {
         try {
             Connection conn = DatabaseConnection.getInstance().getConnection();
             vacacionesDAO = new VacacionesDAO(conn);
+            empleadoDAO = new EmpleadoDAO(conn);
         } catch (Exception e) {
             Alertas.mostrarError("Error", "No se pudo conectar a la base de datos: " + e.getMessage());
             e.printStackTrace();

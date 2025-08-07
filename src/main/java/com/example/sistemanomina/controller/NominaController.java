@@ -144,6 +144,10 @@ public class NominaController {
             return;
         }
         try {
+            if(nominaSeleccionada.getEstado().equals("GENERADA")){
+                mostrarAlerta("Error", "La nómina ya ha sido generada. No se puede calcular nuevamente.");
+                return;
+            }
             boolean acepto = Alertas.mostrarConfirmacion("Confirmación", "¿Está seguro de calcular esta nómina? Esta acción no se puede deshacer.");
             if (acepto) {
                 calcularNomina(nominaSeleccionada);
