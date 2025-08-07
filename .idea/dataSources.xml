@@ -14,7 +14,7 @@
       </jdbc-additional-properties>
       <working-dir>$ProjectFileDir$</working-dir>
     </data-source>
-    <data-source source="LOCAL" name="Base de datos Nomina" uuid="10c3f871-916b-4559-b7ce-0e377345a8dd">
+    <data-source source="LOCAL" name="db_nomina" uuid="283fe2ed-7e02-44d5-aa92-316553b5cc0a">
       <driver-ref>mysql.8</driver-ref>
       <synchronize>true</synchronize>
       <jdbc-driver>com.mysql.cj.jdbc.Driver</jdbc-driver>
