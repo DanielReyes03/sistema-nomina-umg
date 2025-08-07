@@ -95,8 +95,13 @@ CREATE TABLE `nomina` (
     `periodo_inicio` date,
     `periodo_fin` date,
     `fecha_generacion` date,
-    `tipo` enum('Quincenal','Mensual')
+    `tipo` enum('Quincenal','Mensual'),
+    `estado` enum('PENDIENTE','GENERADA') DEFAULT 'PENDIENTE'
 );
+
+SET foreign_key_checks = 0;
+DROP TABLE IF EXISTS `detalles_nomina`;
+SET foreign_key_checks = 1;
 
 CREATE TABLE `detalles_nomina` (
     `id` int PRIMARY KEY AUTO_INCREMENT,
@@ -119,11 +124,22 @@ CREATE TABLE `conceptos_nomina` (
     `aplica_automatico` boolean DEFAULT false
 );
 
-CREATE TABLE `movimientos_nomina` (
-    `id` int PRIMARY KEY AUTO_INCREMENT,
-    `detalle_nomina_id` int,
-    `concepto_id` int,
-    `monto` decimal(10,2)
+
+SET foreign_key_checks = 0;
+DROP TABLE IF EXISTS `movimientos_nomina`;
+SET foreign_key_checks = 1;
+
+CREATE TABLE movimientos_nomina (
+    id INT PRIMARY KEY AUTO_INCREMENT,
+    nomina_id INT NOT NULL,
+    empleado_id INT NOT NULL,
+    concepto_id INT NOT NULL,
+    monto DECIMAL(10,2) NOT NULL,
+    periodo_inicio DATE NOT NULL,
+    periodo_fin DATE NOT NULL,
+    FOREIGN KEY (nomina_id) REFERENCES nomina(id),
+    FOREIGN KEY (empleado_id) REFERENCES empleados(id),
+    FOREIGN KEY (concepto_id) REFERENCES conceptos_nomina(id)
 );
 
 ALTER TABLE `puestos` ADD FOREIGN KEY (`departamento_id`) REFERENCES `departamentos` (`id`);
