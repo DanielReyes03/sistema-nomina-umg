@@ -12,54 +12,56 @@ import javafx.scene.control.*;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.time.format.DateTimeFormatter;
-import java.util.List;
 
 public class AsistenciaController {
 
-    @FXML
-    private TableView<Asistencia> tblasistencia;
-    @FXML
-    private TableColumn<Asistencia, Integer> colid;
-    @FXML
-    private TableColumn<Asistencia, Integer> colcodemp;
-    @FXML
-    private TableColumn<Asistencia, String> colnomemp; // Puedes implementar nombre en otra tabla relacionada si deseas
-    @FXML
-    private TableColumn<Asistencia, String> colfecha;
-    @FXML
-    private TableColumn<Asistencia, String> colhoraentrada;
-    @FXML
-    private TableColumn<Asistencia, String> colhorasalida;
-
-    @FXML
-    private Button BTCREAR;
+    @FXML private TableView<Asistencia> tblasistencia;
+    @FXML private TableColumn<Asistencia, Integer> colid;
+    @FXML private TableColumn<Asistencia, Integer> colcodemp;
+    @FXML private TableColumn<Asistencia, String> colnomemp;
+    @FXML private TableColumn<Asistencia, String> colfecha;
+    @FXML private TableColumn<Asistencia, String> colhoraentrada;
+    @FXML private TableColumn<Asistencia, String> colhorasalida;
+    @FXML private Button BTCREAR, BTEDITAR, BTELIMINAR;
 
     private final AsistenciaDAO asistenciaDAO = new AsistenciaDAO();
     private final ObservableList<Asistencia> listaAsistencias = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
-        // Enlazar columnas
         colid.setCellValueFactory(cellData -> new javafx.beans.property.SimpleIntegerProperty(cellData.getValue().getId()).asObject());
         colcodemp.setCellValueFactory(cellData -> new javafx.beans.property.SimpleIntegerProperty(cellData.getValue().getEmpleadoId()).asObject());
         colfecha.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getFecha().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));
         colhoraentrada.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getHoraEntrada().toString()));
         colhorasalida.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getHoraSalida().toString()));
-
-        // Por ahora muestra solo el ID en la columna de nombre
         colnomemp.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty("Empleado #" + cellData.getValue().getEmpleadoId()));
-
         cargarDatosTabla();
 
-        // Acción para el botón CREAR
         BTCREAR.setOnAction(e -> abrirVentanaCrearEditar(null));
+        BTEDITAR.setOnAction(e -> {
+            Asistencia seleccionada = tblasistencia.getSelectionModel().getSelectedItem();
+            if (seleccionada != null) {
+                abrirVentanaCrearEditar(seleccionada);
+                cargarDatosTabla();
+            } else {
+                mostrarAlerta("Advertencia", "Debe seleccionar una asistencia para editar.");
+            }
+        });
+        BTELIMINAR.setOnAction(e -> {
+            Asistencia seleccionada = tblasistencia.getSelectionModel().getSelectedItem();
+            if (seleccionada != null) {
+                asistenciaDAO.eliminarAsistenciaPorId(seleccionada.getId());
+                cargarDatosTabla();
+            } else {
+                mostrarAlerta("Advertencia", "Debe seleccionar una asistencia para eliminar.");
+            }
+        });
     }
 
-    private void cargarDatosTabla() {
-        listaAsistencias.clear();
-        List<Asistencia> asistencias = asistenciaDAO.obtenerTodasAsistencias();
-        listaAsistencias.addAll(asistencias);
+    void cargarDatosTabla() {
+        listaAsistencias.setAll(asistenciaDAO.obtenerTodasAsistencias());
         tblasistencia.setItems(listaAsistencias);
     }
 
@@ -67,33 +69,28 @@ public class AsistenciaController {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/com/example/sistemanomina/crear-asistencia.fxml"));
             Parent root = loader.load();
-
             CrearAsistenciaController controller = loader.getController();
-            //controller.setAsistenciaControllerPadre(this);
-            //controller.setAsistenciaEditar(asistenciaEditar); // null para crear, objeto para editar
-
+            controller.setAsistenciaControllerPadre(this);
+            controller.setAsistenciaEditar(asistenciaEditar);
             Stage stage = new Stage();
             stage.setTitle(asistenciaEditar == null ? "Crear Asistencia" : "Editar Asistencia");
             stage.initModality(Modality.APPLICATION_MODAL);
             stage.setScene(new Scene(root));
             stage.showAndWait();
-
+        } catch (IOException e) {
+            mostrarAlerta("Error", "No se pudo cargar el archivo FXML: " + e.getMessage());
+            e.printStackTrace();
         } catch (Exception e) {
-            mostrarAlerta("Error", "No se pudo cargar la ventana.");
+            mostrarAlerta("Error", "Ocurrió un error al abrir la ventana: " + e.getMessage());
             e.printStackTrace();
         }
     }
 
-    public void refrescarTabla() {
-        cargarDatosTabla();
-    }
-
-    private void mostrarAlerta(String titulo, String mensaje) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
+    public void mostrarAlerta(String titulo, String mensaje) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
         alert.setTitle(titulo);
         alert.setHeaderText(null);
         alert.setContentText(mensaje);
         alert.showAndWait();
     }
 }
-

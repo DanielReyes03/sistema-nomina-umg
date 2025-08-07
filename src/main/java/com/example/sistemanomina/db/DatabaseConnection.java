@@ -30,6 +30,10 @@ public class DatabaseConnection {
         return instance;
     }
 
+    public static Connection getConexion() {
+        return null;
+    }
+
     public Connection getConnection() {
         return connection;
     }

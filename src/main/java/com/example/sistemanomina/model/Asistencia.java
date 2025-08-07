@@ -9,17 +9,7 @@ public class Asistencia {
     private LocalDate fecha;
     private LocalTime horaEntrada;
     private LocalTime horaSalida;
-
-    // Constructores
-    public Asistencia() {
-    }
-
-    public Asistencia(int empleadoId, LocalDate fecha, LocalTime horaEntrada, LocalTime horaSalida) {
-        this.empleadoId = empleadoId;
-        this.fecha = fecha;
-        this.horaEntrada = horaEntrada;
-        this.horaSalida = horaSalida;
-    }
+    private String nombreEmpleado;
 
     public Asistencia(int id, int empleadoId, LocalDate fecha, LocalTime horaEntrada, LocalTime horaSalida) {
         this.id = id;
@@ -29,55 +19,21 @@ public class Asistencia {
         this.horaSalida = horaSalida;
     }
 
-    // Getters y Setters
-    public int getId() {
-        return id;
-    }
+    public int getId() { return id; }
+    public void setId(int id) { this.id = id; }
 
-    public void setId(int id) {
-        this.id = id;
-    }
+    public int getEmpleadoId() { return empleadoId; }
+    public void setEmpleadoId(int empleadoId) { this.empleadoId = empleadoId; }
 
-    public int getEmpleadoId() {
-        return empleadoId;
-    }
+    public LocalDate getFecha() { return fecha; }
+    public void setFecha(LocalDate fecha) { this.fecha = fecha; }
 
-    public void setEmpleadoId(int empleadoId) {
-        this.empleadoId = empleadoId;
-    }
+    public LocalTime getHoraEntrada() { return horaEntrada; }
+    public void setHoraEntrada(LocalTime horaEntrada) { this.horaEntrada = horaEntrada; }
 
-    public LocalDate getFecha() {
-        return fecha;
-    }
+    public LocalTime getHoraSalida() { return horaSalida; }
+    public void setHoraSalida(LocalTime horaSalida) { this.horaSalida = horaSalida; }
 
-    public void setFecha(LocalDate fecha) {
-        this.fecha = fecha;
-    }
-
-    public LocalTime getHoraEntrada() {
-        return horaEntrada;
-    }
-
-    public void setHoraEntrada(LocalTime horaEntrada) {
-        this.horaEntrada = horaEntrada;
-    }
-
-    public LocalTime getHoraSalida() {
-        return horaSalida;
-    }
-
-    public void setHoraSalida(LocalTime horaSalida) {
-        this.horaSalida = horaSalida;
-    }
-
-    @Override
-    public String toString() {
-        return "Asistencia{" +
-                "id=" + id +
-                ", empleadoId=" + empleadoId +
-                ", fecha=" + fecha +
-                ", horaEntrada=" + horaEntrada +
-                ", horaSalida=" + horaSalida +
-                '}';
-    }
+    public String getNombreEmpleado() { return nombreEmpleado; }
+    public void setNombreEmpleado(String nombreEmpleado) { this.nombreEmpleado = nombreEmpleado; }
 }

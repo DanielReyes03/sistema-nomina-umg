@@ -6,19 +6,19 @@
 <?import javafx.scene.layout.AnchorPane?>
 
 <AnchorPane prefHeight="600.0" prefWidth="1000.0" xmlns="http://javafx.com/javafx/24.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sistemanomina.controller.AsistenciaController">
-   <children>
-      <TableView fx:id="tblasistencia" layoutX="138.0" layoutY="120.0" prefHeight="455.0" prefWidth="751.0">
-        <columns>
-          <TableColumn fx:id="colid" prefWidth="87.91598510742188" text="ID" />
-          <TableColumn fx:id="colcodemp" prefWidth="138.40451049804688" text="CODIGO EMPLEADO" />
-            <TableColumn fx:id="colnomemp" prefWidth="150.759521484375" text="NOMBRE EMPLEADO" />
-            <TableColumn fx:id="colfecha" prefWidth="98.740478515625" text="FECHA" />
-            <TableColumn fx:id="colhoraentrada" prefWidth="138.80145263671875" text="HORA ENTRADA" />
-            <TableColumn fx:id="colhorasalida" prefWidth="137.69854736328125" text="HORA SALIDA" />
-        </columns>
-      </TableView>
-      <Button fx:id="BTCREAR" layoutX="647.0" layoutY="82.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" text="CREAR" />
-      <Button fx:id="BTEDITAR" layoutX="734.0" layoutY="82.0" mnemonicParsing="false" prefHeight="26.0" prefWidth="70.0" text="EDITAR" />
-      <Button fx:id="BTELIMINAR" layoutX="815.0" layoutY="82.0" mnemonicParsing="false" text="ELIMINAR" />
-   </children>
+    <children>
+        <TableView fx:id="tblasistencia" layoutX="138.0" layoutY="120.0" prefHeight="455.0" prefWidth="751.0">
+            <columns>
+                <TableColumn fx:id="colid" text="ID" />
+                <TableColumn fx:id="colcodemp" text="CODIGO EMPLEADO" />
+                <TableColumn fx:id="colnomemp" text="NOMBRE EMPLEADO" />
+                <TableColumn fx:id="colfecha" text="FECHA" />
+                <TableColumn fx:id="colhoraentrada" text="HORA ENTRADA" />
+                <TableColumn fx:id="colhorasalida" text="HORA SALIDA" />
+            </columns>
+        </TableView>
+        <Button fx:id="BTCREAR" layoutX="675.0" layoutY="82.0" text="CREAR" />
+        <Button fx:id="BTEDITAR" layoutX="743.0" layoutY="82.0" text="EDITAR" />
+        <Button fx:id="BTELIMINAR" layoutX="815.0" layoutY="82.0" text="ELIMINAR" />
+    </children>
 </AnchorPane>
