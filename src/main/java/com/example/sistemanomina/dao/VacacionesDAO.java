@@ -122,6 +122,43 @@ public class VacacionesDAO {
         }
     }
 
+    // VacacionesDAO.java
+
+    public List<Vacaciones> obtenerVacacionesAprobadasEnPeriodo(int empleadoId, Date periodoInicio, Date periodoFin) throws SQLException {
+        List<Vacaciones> lista = new ArrayList<>();
+        String sql = """
+        SELECT v.*, e.nombre AS nombre_empleado, e.apellido AS apellido_empleado
+        FROM vacaciones v
+        JOIN empleados e ON v.empleado_id = e.id
+        WHERE v.empleado_id = ?
+          AND v.aprobada = 1
+          AND (
+                (v.fecha_inicio BETWEEN ? AND ?)
+             OR (v.fecha_fin BETWEEN ? AND ?)
+             OR (v.fecha_inicio <= ? AND v.fecha_fin >= ?)
+          )
+    """;
+        try (Connection conn = DatabaseConnection.getInstance().getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, empleadoId);
+            stmt.setDate(2, periodoInicio);
+            stmt.setDate(3, periodoFin);
+            stmt.setDate(4, periodoInicio);
+            stmt.setDate(5, periodoFin);
+            stmt.setDate(6, periodoInicio);
+            stmt.setDate(7, periodoFin);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    lista.add(mapResultSet(rs));
+                }
+            }
+        }
+        return lista;
+    }
+
+
     // ✅ Mapear resultados con nombre completo
     private Vacaciones mapResultSet(ResultSet rs) throws SQLException {
         Vacaciones v = new Vacaciones();

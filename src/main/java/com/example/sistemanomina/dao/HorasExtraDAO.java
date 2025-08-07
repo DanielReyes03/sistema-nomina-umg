@@ -76,4 +76,49 @@ public class HorasExtraDAO {
             return ps.executeUpdate() > 0;
         }
     }
+
+    // HorasExtraDAO.java
+
+    /**
+     * Obtiene la lista de horas extra aprobadas de un empleado en un período.
+     * @param empleadoId ID del empleado
+     * @param periodoInicio Fecha de inicio del período de nómina
+     * @param periodoFin Fecha de fin del período de nómina
+     * @return Lista de objetos HorasExtra aprobadas en el período
+     */
+    public List<HorasExtra> obtenerHorasExtraAprobadasEnPeriodo(int empleadoId, Date periodoInicio, Date periodoFin) throws SQLException {
+        List<HorasExtra> lista = new ArrayList<>();
+        String sql = """
+        SELECT he.id, he.empleado_id, e.nombre, e.apellido, he.fecha, he.horas, he.motivo, he.aprobado
+        FROM horas_extra he
+        JOIN empleados e ON he.empleado_id = e.id
+        WHERE he.empleado_id = ?
+          AND he.aprobado = 1
+          AND he.fecha BETWEEN ? AND ?
+    """;
+        try (PreparedStatement ps = connection.prepareStatement(sql)) {
+            ps.setInt(1, empleadoId);
+            ps.setDate(2, periodoInicio);
+            ps.setDate(3, periodoFin);
+
+            try (ResultSet rs = ps.executeQuery()) {
+                while (rs.next()) {
+                    HorasExtra h = new HorasExtra();
+                    h.setId(rs.getInt("id"));
+                    h.setEmpleadoId(rs.getInt("empleado_id"));
+                    String nombreCompleto = rs.getString("nombre") + " " + rs.getString("apellido");
+                    h.setNombreEmpleado(nombreCompleto);
+                    h.setFecha(rs.getDate("fecha"));
+                    h.setHoras(rs.getInt("horas"));
+                    h.setMotivo(rs.getString("motivo"));
+                    h.setAprobado(rs.getBoolean("aprobado"));
+                    lista.add(h);
+                }
+            }
+        }
+        return lista;
+    }
+
+
+
 }

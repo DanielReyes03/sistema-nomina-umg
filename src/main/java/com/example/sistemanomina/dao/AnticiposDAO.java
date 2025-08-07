@@ -81,5 +81,31 @@ public class AnticiposDAO {
         }
     }
 
+    public List<Anticipo> obtenerAnticiposEnPeriodo(int empleadoId, Date periodoInicio, Date periodoFin) {
+        List<Anticipo> lista = new ArrayList<>();
+        String sql = "SELECT * FROM anticipos WHERE empleado_id = ? AND fecha BETWEEN ? AND ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, empleadoId);
+            stmt.setDate(2, periodoInicio);
+            stmt.setDate(3, periodoFin);
+
+            try (ResultSet rs = stmt.executeQuery()) {
+                while (rs.next()) {
+                    Anticipo a = new Anticipo();
+                    a.setId(rs.getInt("id"));
+                    a.setEmpleadoId(rs.getInt("empleado_id"));
+                    a.setMonto(rs.getDouble("monto"));
+                    a.setFecha(rs.getDate("fecha").toLocalDate());
+                    a.setMotivo(rs.getString("motivo"));
+                    a.setSaldoPendiente(rs.getDouble("saldo_pendiente"));
+                    lista.add(a);
+                }
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return lista;
+    }
+
 
 }
