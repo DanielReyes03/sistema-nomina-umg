@@ -6,8 +6,14 @@ import com.example.sistemanomina.model.Asistencia;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.time.LocalDate;
 
 public class AsistenciaDAO {
+
+    private final Connection connection;
+    public AsistenciaDAO(Connection conexion) {
+        this.connection = conexion;
+    }
 
     public void insertarAsistencia(Asistencia asistencia) {
         String sql = "INSERT INTO asistencias (empleado_id, fecha, hora_entrada, hora_salida) VALUES (?, ?, ?, ?)";
@@ -83,4 +89,25 @@ public class AsistenciaDAO {
             System.err.println("❌ Error al actualizar asistencia: " + e.getMessage());
         }
     }
+
+    public int contarDiasAsistidos(int empleadoId, LocalDate periodoInicio, LocalDate periodoFin) {
+        String sql = "SELECT COUNT(DISTINCT fecha) AS total " +
+                "FROM asistencias " +
+                "WHERE empleado_id = ? AND fecha BETWEEN ? AND ?";
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
+            stmt.setInt(1, empleadoId);
+            stmt.setDate(2, Date.valueOf(periodoInicio));
+            stmt.setDate(3, Date.valueOf(periodoFin));
+            try (ResultSet rs = stmt.executeQuery()) {
+                if (rs.next()) {
+                    return rs.getInt("total");
+                }
+            }
+        } catch (SQLException e) {
+            System.err.println("Error al contar días asistidos: " + e.getMessage());
+        }
+        return 0;
+    }
+
+
 }

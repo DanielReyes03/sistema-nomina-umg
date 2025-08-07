@@ -9,6 +9,10 @@ import java.util.List;
 
 public class VacacionesDAO {
 
+    private final Connection connection;
+    public VacacionesDAO(Connection conexion) {
+        this.connection = conexion;
+    }
     // Crear un nuevo registro
     public void insertar(Vacaciones vacaciones) throws SQLException {
         String sql = "INSERT INTO vacaciones (empleado_id, fecha_inicio, fecha_fin, dias, aprobada) VALUES (?, ?, ?, ?, ?)";
@@ -138,9 +142,7 @@ public class VacacionesDAO {
              OR (v.fecha_inicio <= ? AND v.fecha_fin >= ?)
           )
     """;
-        try (Connection conn = DatabaseConnection.getInstance().getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
+        try (PreparedStatement stmt = connection.prepareStatement(sql)) {
             stmt.setInt(1, empleadoId);
             stmt.setDate(2, periodoInicio);
             stmt.setDate(3, periodoFin);

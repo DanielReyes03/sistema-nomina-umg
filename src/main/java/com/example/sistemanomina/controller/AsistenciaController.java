@@ -1,6 +1,7 @@
 package com.example.sistemanomina.controller;
 
 import com.example.sistemanomina.dao.AsistenciaDAO;
+import com.example.sistemanomina.db.DatabaseConnection;
 import com.example.sistemanomina.model.Asistencia;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -13,6 +14,7 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.sql.Connection;
 import java.time.format.DateTimeFormatter;
 
 public class AsistenciaController {
@@ -26,11 +28,18 @@ public class AsistenciaController {
     @FXML private TableColumn<Asistencia, String> colhorasalida;
     @FXML private Button BTCREAR, BTEDITAR, BTELIMINAR;
 
-    private final AsistenciaDAO asistenciaDAO = new AsistenciaDAO();
+    private AsistenciaDAO asistenciaDAO;
     private final ObservableList<Asistencia> listaAsistencias = FXCollections.observableArrayList();
 
     @FXML
     public void initialize() {
+        try {
+            Connection conn = DatabaseConnection.getInstance().getConnection();
+            asistenciaDAO = new AsistenciaDAO(conn);
+        } catch (Exception e) {
+            mostrarAlerta("Error", "No se pudo conectar a la base de datos: " + e.getMessage());
+            e.printStackTrace();
+        }
         colid.setCellValueFactory(cellData -> new javafx.beans.property.SimpleIntegerProperty(cellData.getValue().getId()).asObject());
         colcodemp.setCellValueFactory(cellData -> new javafx.beans.property.SimpleIntegerProperty(cellData.getValue().getEmpleadoId()).asObject());
         colfecha.setCellValueFactory(cellData -> new javafx.beans.property.SimpleStringProperty(cellData.getValue().getFecha().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))));

@@ -23,7 +23,7 @@
    </TableView>
 
    <!-- Botones de acción -->
-   <Button fx:id="btnGenerarNomina" layoutX="643.0" layoutY="40.0" onAction="#onGenerarNomina" prefHeight="35.0" prefWidth="116.0" style="-fx-background-color: #A8D5B9; -fx-background-radius: 10;" text="Generar Nomina" />
+   <Button fx:id="btnGenerarNomina" layoutX="643.0" layoutY="40.0" onAction="#onCalcularNomina" prefHeight="35.0" prefWidth="116.0" style="-fx-background-color: #A8D5B9; -fx-background-radius: 10;" text="Generar Nomina" />
    <Button fx:id="btnVerDetalleNomina" layoutX="390.0" layoutY="40.0" onAction="#onVerMovimientosNomina" prefHeight="35.0" prefWidth="116.0" style="-fx-background-color: #A8D5B9; -fx-background-radius: 10;" text="Ver Movimientos" />
    <Button fx:id="btnAgregarMovimiento" layoutX="232.0" layoutY="40.0" onAction="#onAgregarMovimiento" prefHeight="35.0" prefWidth="150.0" style="-fx-background-color: #A8D5B9; -fx-background-radius: 10;" text="Agregar Movimientos" />
    <Button fx:id="btnCrearNomina" layoutX="109.0" layoutY="40.0" onAction="#onCrearNomina" prefHeight="35.0" prefWidth="116.0" style="-fx-background-color: #A8D5B9; -fx-background-radius: 10;" text="Crear Nomina" />

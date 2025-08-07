@@ -2,13 +2,16 @@ package com.example.sistemanomina.controller;
 
 import com.example.sistemanomina.dao.AsistenciaDAO;
 import com.example.sistemanomina.dao.EmpleadoDAO;
+import com.example.sistemanomina.db.DatabaseConnection;
 import com.example.sistemanomina.model.Asistencia;
 import com.example.sistemanomina.model.Empleado;
+import com.example.sistemanomina.util.Alertas;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -25,7 +28,7 @@ public class CrearAsistenciaController {
     @FXML private Button btnCancelar;
 
     private Asistencia asistenciaEditar;
-    private final AsistenciaDAO asistenciaDAO = new AsistenciaDAO();
+    private AsistenciaDAO asistenciaDAO;
     private EmpleadoDAO empleadoDAO;
     private AsistenciaController asistenciaControllerPadre;
 
@@ -35,59 +38,66 @@ public class CrearAsistenciaController {
 
     @FXML
     public void initialize() {
-        // Defensive check for FXML binding
-        if (txtHoraEntrada == null || txtHoraSalida == null) {
-            System.err.println("Error: One or more TextField fields (txtHoraEntrada or txtHoraSalida) are null in CrearAsistenciaController");
-            return;
-        }
+        try{
+            // Defensive check for FXML binding
+            Connection conn = DatabaseConnection.getInstance().getConnection();
+            asistenciaDAO = new AsistenciaDAO(conn);
 
-        // Initialize empleadoDAO if not already initialized
-        if (empleadoDAO == null) {
-            try {
-                empleadoDAO = new EmpleadoDAO(com.example.sistemanomina.db.DatabaseConnection.getInstance().getConnection());
-            } catch (SQLException e) {
-                System.err.println("Error initializing EmpleadoDAO: " + e.getMessage());
+            if (txtHoraEntrada == null || txtHoraSalida == null) {
+                System.err.println("Error: One or more TextField fields (txtHoraEntrada or txtHoraSalida) are null in CrearAsistenciaController");
                 return;
             }
+
+            // Initialize empleadoDAO if not already initialized
+            if (empleadoDAO == null) {
+                try {
+                    empleadoDAO = new EmpleadoDAO(com.example.sistemanomina.db.DatabaseConnection.getInstance().getConnection());
+                } catch (SQLException e) {
+                    System.err.println("Error initializing EmpleadoDAO: " + e.getMessage());
+                    return;
+                }
+            }
+
+            // Populate ChoiceBox with employees
+            cbEmpleadoId.setItems(FXCollections.observableArrayList(empleadoDAO.obtenerEmpleados()));
+            cbEmpleadoId.setConverter(new javafx.util.StringConverter<Empleado>() {
+                @Override
+                public String toString(Empleado empleado) {
+                    return empleado != null ? empleado.getId() + " - " + empleado.getNombre() + " " + empleado.getApellido() : "";
+                }
+                @Override
+                public Empleado fromString(String string) {
+                    return null;
+                }
+            });
+
+            // Ensure buttons are not null
+            if (btnGuardar != null) {
+                btnGuardar.setOnAction(e -> guardarAsistencia());
+            } else {
+                System.err.println("Error: btnGuardar is null in CrearAsistenciaController");
+            }
+
+            if (btnCancelar != null) {
+                btnCancelar.setOnAction(e -> ((Stage) btnCancelar.getScene().getWindow()).close());
+            } else {
+                System.err.println("Error: btnCancelar is null in CrearAsistenciaController");
+            }
+
+            // Add ChangeListener for lenient input
+            txtHoraEntrada.textProperty().addListener((obs, oldValue, newValue) -> {
+                if (!newValue.isEmpty() && !newValue.matches("[0-2]?[0-9]?(:[0-5]?[0-9]?)?")) {
+                    txtHoraEntrada.setText(oldValue); // Revert only if completely invalid
+                }
+            });
+            txtHoraSalida.textProperty().addListener((obs, oldValue, newValue) -> {
+                if (!newValue.isEmpty() && !newValue.matches("[0-2]?[0-9]?(:[0-5]?[0-9]?)?")) {
+                    txtHoraSalida.setText(oldValue); // Revert only if completely invalid
+                }
+            });
+        }catch (Exception e){
+            Alertas.mostrarError("Error al inicializar el controlador de asistencia", "No se pudo cargar la base de datos o los datos de empleados.");
         }
-
-        // Populate ChoiceBox with employees
-        cbEmpleadoId.setItems(FXCollections.observableArrayList(empleadoDAO.obtenerEmpleados()));
-        cbEmpleadoId.setConverter(new javafx.util.StringConverter<Empleado>() {
-            @Override
-            public String toString(Empleado empleado) {
-                return empleado != null ? empleado.getId() + " - " + empleado.getNombre() + " " + empleado.getApellido() : "";
-            }
-            @Override
-            public Empleado fromString(String string) {
-                return null;
-            }
-        });
-
-        // Ensure buttons are not null
-        if (btnGuardar != null) {
-            btnGuardar.setOnAction(e -> guardarAsistencia());
-        } else {
-            System.err.println("Error: btnGuardar is null in CrearAsistenciaController");
-        }
-
-        if (btnCancelar != null) {
-            btnCancelar.setOnAction(e -> ((Stage) btnCancelar.getScene().getWindow()).close());
-        } else {
-            System.err.println("Error: btnCancelar is null in CrearAsistenciaController");
-        }
-
-        // Add ChangeListener for lenient input
-        txtHoraEntrada.textProperty().addListener((obs, oldValue, newValue) -> {
-            if (!newValue.isEmpty() && !newValue.matches("[0-2]?[0-9]?(:[0-5]?[0-9]?)?")) {
-                txtHoraEntrada.setText(oldValue); // Revert only if completely invalid
-            }
-        });
-        txtHoraSalida.textProperty().addListener((obs, oldValue, newValue) -> {
-            if (!newValue.isEmpty() && !newValue.matches("[0-2]?[0-9]?(:[0-5]?[0-9]?)?")) {
-                txtHoraSalida.setText(oldValue); // Revert only if completely invalid
-            }
-        });
     }
 
     public void setAsistenciaEditar(Asistencia asistencia) {

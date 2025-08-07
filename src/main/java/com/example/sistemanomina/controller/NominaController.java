@@ -53,7 +53,6 @@ public class NominaController {
     private ObservableList<Nomina> nominas;
     private NominaDAO nominaDAO;
     private Nomina nominaSeleccionada;
-
     private final DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
 
     @FXML
@@ -94,7 +93,6 @@ public class NominaController {
             e.printStackTrace();
         }
     }
-
     @FXML
     private void onCrearNomina() {
         try {
@@ -103,15 +101,6 @@ public class NominaController {
             Alertas.mostrarError("Error", "Oops, algo salió mal al abrir la pantalla de nómina.");
         }
     }
-    @FXML
-    private void onGenerarNomina() {
-        try {
-
-        } catch (Exception e) {
-            Alertas.mostrarError("Error", "Oops, algo salió mal al abrir la pantalla de nómina.");
-        }
-    }
-
     @FXML
     private void onVerDetalleNomina() {
         if (nominaSeleccionada == null) {
@@ -148,7 +137,23 @@ public class NominaController {
             mostrarAlerta("Error", "No se pudo agregar movimientos a la nómina.");
         }
     }
-        public void actualizarTabla() {
+    @FXML
+    private void onCalcularNomina() {
+        if (nominaSeleccionada == null) {
+            mostrarAlerta("Selección", "Seleccione una nómina para calcularla.");
+            return;
+        }
+        try {
+            boolean acepto = Alertas.mostrarConfirmacion("Confirmación", "¿Está seguro de calcular esta nómina? Esta acción no se puede deshacer.");
+            if (acepto) {
+                calcularNomina(nominaSeleccionada);
+                actualizarTabla();
+            }
+        } catch (Exception e) {
+            mostrarAlerta("Error", "No se pudo agregar movimientos a la nómina.");
+        }
+    }
+    public void actualizarTabla() {
         try {
             nominas.clear();
             nominas.addAll(nominaDAO.obtenerTodos());
@@ -193,7 +198,6 @@ public class NominaController {
             e.printStackTrace();
         }
     }
-
     private void abrirVentanaDetalleNomina(Nomina nomina) {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource("detalle-nomina.fxml"));
@@ -230,18 +234,16 @@ public class NominaController {
             e.printStackTrace();
         }
     }
-
     private void calcularNomina(Nomina nomina) {
         try {
             Connection conn = DatabaseConnection.getInstance().getConnection();
             EmpleadoDAO empleadoDAO = new EmpleadoDAO(conn);
-            VacacionesDAO vacacionesDAO = new VacacionesDAO();
             HorasExtraDAO horasExtraDAO = new HorasExtraDAO(conn);
             AnticiposDAO anticiposDAO = new AnticiposDAO(conn);
             MovimientoNominaDAO movimientoNominaDAO = new MovimientoNominaDAO(conn);
             DetalleNominaDAO detalleNominaDAO = new DetalleNominaDAO(conn);
-            // AsistenciaDAO asistenciaDAO = new AsistenciaDAO(conn); // Cuando esté listo
-
+            AsistenciaDAO asistenciaDAO = new AsistenciaDAO(conn);
+            VacacionesDAO vacacionesDAO = new VacacionesDAO(conn);
             LocalDate periodoInicio = nomina.getPeriodoInicio();
             LocalDate periodoFin = nomina.getPeriodoFin();
 
@@ -252,20 +254,22 @@ public class NominaController {
 
                 // 1. Días laborados (cuando tengas el DAO de asistencia)
                 int diasLaborados = 0;
-                // diasLaborados = asistenciaDAO.contarDiasAsistidos(empleadoId, periodoInicio, periodoFin);
-
                 // 2. Ausencias no justificadas (cuando tengas el DAO de asistencia)
                 int ausencias = 0;
-                // ausencias = asistenciaDAO.contarAusenciasNoJustificadas(empleadoId, periodoInicio, periodoFin);
-
                 // 3. Vacaciones aprobadas en el período
                 List<Vacaciones> vacaciones = vacacionesDAO.obtenerVacacionesAprobadasEnPeriodo(
                         empleadoId, Date.valueOf(periodoInicio), Date.valueOf(periodoFin));
+
+                int DIAS_DEL_PERIODO = periodoFin.getDayOfMonth() - periodoInicio.getDayOfMonth() + 1;
+                diasLaborados = asistenciaDAO.contarDiasAsistidos(empleadoId, periodoInicio, periodoFin);
                 int diasVacaciones = vacaciones.stream().mapToInt(Vacaciones::getDias).sum();
+                ausencias = DIAS_DEL_PERIODO - diasLaborados - diasVacaciones;
+                if (ausencias < 0) ausencias = 0;
 
                 // 4. Horas extra aprobadas en el período
                 List<HorasExtra> horasExtra = horasExtraDAO.obtenerHorasExtraAprobadasEnPeriodo(
                         empleadoId, Date.valueOf(periodoInicio), Date.valueOf(periodoFin));
+                System.out.println(horasExtra);
                 int totalHorasExtra = horasExtra.stream().mapToInt(HorasExtra::getHoras).sum();
                 double valorHoraExtra = calcularValorHoraExtra(empleado.getSalario());
                 double pagoHorasExtra = totalHorasExtra * valorHoraExtra;
@@ -282,7 +286,6 @@ public class NominaController {
                         nomina.getId(), empleadoId, periodoInicio, periodoFin, "DEDUCCION");
 
                 // 7. Sueldo base proporcional (ajusta DIAS_DEL_PERIODO según tu lógica)
-                int DIAS_DEL_PERIODO = periodoFin.getDayOfMonth() - periodoInicio.getDayOfMonth() + 1;
                 double sueldoBase = (empleado.getSalario() / DIAS_DEL_PERIODO) * (diasLaborados + diasVacaciones);
 
                 // 8. Deducción por ausencias
@@ -314,7 +317,6 @@ public class NominaController {
             e.printStackTrace();
         }
     }
-
     public static double calcularValorHoraExtra(double salarioMensual) {
         double valorHoraOrdinaria = salarioMensual / 30.0 / 8.0;
         return valorHoraOrdinaria * 1.5;
