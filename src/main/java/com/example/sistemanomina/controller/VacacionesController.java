@@ -1,5 +1,6 @@
 package com.example.sistemanomina.controller;
 
+import com.example.sistemanomina.dao.AsistenciaDAO;
 import com.example.sistemanomina.dao.VacacionesDAO;
 import com.example.sistemanomina.db.DatabaseConnection;
 import com.example.sistemanomina.model.Vacaciones;
@@ -16,6 +17,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.stage.Stage;
 
+import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -30,15 +32,18 @@ public class VacacionesController {
     @FXML private TableColumn<Vacaciones, Integer> ColDias;
     @FXML private TableColumn<Vacaciones, Boolean> ColAprobada;
 
-    private final VacacionesDAO vacacionesDAO;
-
-    public VacacionesController() throws SQLException {
-        this.vacacionesDAO = new VacacionesDAO();
-    }
+    private VacacionesDAO vacacionesDAO;
 
     @FXML
     public void initialize() {
         try {
+            try {
+                Connection conn = DatabaseConnection.getInstance().getConnection();
+                vacacionesDAO = new VacacionesDAO(conn);
+            } catch (Exception e) {
+                Alertas.mostrarError("Error", "No se pudo conectar a la base de datos: " + e.getMessage());
+                e.printStackTrace();
+            }
             ColID.setCellValueFactory(cellData ->
                     new SimpleIntegerProperty(cellData.getValue().getId()).asObject());
 

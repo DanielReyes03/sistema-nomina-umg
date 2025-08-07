@@ -77,6 +77,19 @@ public class ConceptoNominaDAO {
         return lista;
     }
 
+    public List<ConceptoNomina> obtenerConceptosNoAutomaticos() throws SQLException {
+        List<ConceptoNomina> lista = new ArrayList<>();
+        String sql = "SELECT * FROM conceptos_nomina WHERE aplica_automatico = FALSE";
+        try (Statement stmt = connection.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+            while (rs.next()) {
+                lista.add(mapResultSetToConcepto(rs));
+            }
+        }
+        return lista;
+    }
+
+
     private ConceptoNomina mapResultSetToConcepto(ResultSet rs) throws SQLException {
         return new ConceptoNomina(
                 rs.getInt("id"),

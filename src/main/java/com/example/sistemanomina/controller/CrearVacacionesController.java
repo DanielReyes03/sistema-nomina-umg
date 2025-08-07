@@ -5,6 +5,7 @@ import com.example.sistemanomina.dao.VacacionesDAO;
 import com.example.sistemanomina.db.DatabaseConnection;
 import com.example.sistemanomina.model.Empleado;
 import com.example.sistemanomina.model.Vacaciones;
+import com.example.sistemanomina.util.Alertas;
 import javafx.collections.FXCollections;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -30,23 +31,22 @@ public class CrearVacacionesController {
     @FXML private Spinner<Integer> SpinnerDias;
     @FXML private Text MensajeAccion;
 
-    private final VacacionesDAO vacacionesDAO = new VacacionesDAO();
+    private VacacionesDAO vacacionesDAO;
     private EmpleadoDAO empleadoDAO;
 
     private VacacionesController vacacionesController;
     private Vacaciones vacacionesEditar;
 
-    public CrearVacacionesController() {
-        try {
-            Connection conn = DatabaseConnection.getInstance().getConnection();
-            empleadoDAO = new EmpleadoDAO(conn);
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-    }
-
     @FXML
     public void initialize() {
+        try {
+            Connection conn = DatabaseConnection.getInstance().getConnection();
+            vacacionesDAO = new VacacionesDAO(conn);
+            empleadoDAO = new EmpleadoDAO(conn);
+        } catch (Exception e) {
+            Alertas.mostrarError("Error", "No se pudo conectar a la base de datos: " + e.getMessage());
+            e.printStackTrace();
+        }
         cargarEmpleados();
         SpinnerDias.setValueFactory(new SpinnerValueFactory.IntegerSpinnerValueFactory(1, 30, 1));
 

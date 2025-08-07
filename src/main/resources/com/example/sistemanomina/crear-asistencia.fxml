@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sistemanomina.controller.CrearAsistenciaController">
+    <children>
+        <Label layoutX="50.0" layoutY="50.0" text="Código Empleado:" />
+        <ChoiceBox fx:id="cbEmpleadoId" layoutX="180.0" layoutY="45.0" prefWidth="200.0" />
+        <Label layoutX="50.0" layoutY="100.0" text="Fecha:" />
+        <DatePicker fx:id="dpFecha" layoutX="180.0" layoutY="95.0" />
+        <Label layoutX="50.0" layoutY="150.0" text="Hora Entrada (HH:mm):" />
+        <TextField fx:id="txtHoraEntrada" layoutX="180.0" layoutY="145.0" promptText="HH:mm" />
+        <Label layoutX="50.0" layoutY="200.0" text="Hora Salida (HH:mm):" />
+        <TextField fx:id="txtHoraSalida" layoutX="180.0" layoutY="195.0" promptText="HH:mm" />
+        <Button fx:id="btnGuardar" layoutX="180.0" layoutY="250.0" text="Guardar" />
+        <Button fx:id="btnCancelar" layoutX="260.0" layoutY="250.0" text="Cancelar" />
+    </children>
+</AnchorPane>
