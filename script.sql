@@ -153,5 +153,4 @@ ALTER TABLE `vacaciones` ADD FOREIGN KEY (`empleado_id`) REFERENCES `empleados` 
 ALTER TABLE `adelantos` ADD FOREIGN KEY (`empleado_id`) REFERENCES `empleados` (`id`);
 ALTER TABLE `detalles_nomina` ADD FOREIGN KEY (`nomina_id`) REFERENCES `nomina` (`id`);
 ALTER TABLE `detalles_nomina` ADD FOREIGN KEY (`empleado_id`) REFERENCES `empleados` (`id`);
-ALTER TABLE `movimientos_nomina` ADD FOREIGN KEY (`detalle_nomina_id`) REFERENCES `detalles_nomina` (`id`);
 ALTER TABLE `movimientos_nomina` ADD FOREIGN KEY (`concepto_id`) REFERENCES `conceptos_nomina` (`id`);
