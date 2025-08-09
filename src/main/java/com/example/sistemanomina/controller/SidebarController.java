@@ -74,7 +74,7 @@ public class SidebarController {
 
     @FXML
     public void abrirMenuayuda() {
-        abrirVentana("/com/example/sistemanomina/ayuda.fxml", "Conceptos Nomina");
+        abrirVentana("/com/example/sistemanomina/ayuda.fxml", "Centro De Ayuda");
     }
 
 
