@@ -168,9 +168,9 @@
                      </ImageView>
                   </children>
                </HBox>
-               <HBox onMouseClicked="#abrirMenuReporteria" spacing="5.0">
+               <HBox onMouseClicked="#abrirMenuayuda" spacing="5.0">
                   <children>
-                     <Button fx:id="btnReporteria1" mnemonicParsing="false" prefHeight="39.0" prefWidth="142.0" style="-fx-background-color: #A8D5BA; -fx-text-alignment: left;" text="Ayuda">
+                     <Button fx:id="btnayuda" mnemonicParsing="false" prefHeight="39.0" prefWidth="142.0" style="-fx-background-color: #A8D5BA; -fx-text-alignment: left;" text="Ayuda">
                         <font>
                            <Font name="System Bold" size="20.0" />
                         </font>

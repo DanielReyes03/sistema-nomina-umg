@@ -67,6 +67,13 @@ public class MenuAdminController {
         abrirVentana("puestos.fxml", "Puestos");
     }
 
+    @FXML
+    public void abrirMenuAyuda() {
+        abrirVentana("ayuda.fxml", "Puestos");
+    }
+
+
+
     private void abrirVentana(String fxmlPath, String titulo) {
         try {
             FXMLLoader loader = new FXMLLoader(Main.class.getResource(fxmlPath));
