@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<AnchorPane fx:id="ayudaPane" prefHeight="600.0" prefWidth="738.0" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.example.sistemanomina.controller.Ayudacontroller">
+
+    <!-- Texto de bienvenida -->
+    <Label layoutX="20.0" layoutY="25.0" style="-fx-font-size: 16px; -fx-font-weight: bold;" text="Bienvenido al Centro de Ayuda">
+      <font>
+         <Font size="18.0" />
+      </font></Label>
+
+    <Label layoutX="20.0" layoutY="51.0" text="Encontraras Ayuda para las siguientes categorías:">
+      <font>
+         <Font size="16.0" />
+      </font></Label>
+
+    <!-- Contenido de ayuda -->
+    <ScrollPane fitToWidth="true" layoutX="20.0" layoutY="82.0" prefHeight="410.0" prefWidth="660.0">
+        <content>
+            <VBox prefWidth="640.0" spacing="15" AnchorPane.topAnchor="0.0">
+
+                <!-- Categoría: Empleados -->
+                <HBox spacing="10">
+                    <ImageView fitHeight="35.0" fitWidth="34.0">
+                        <image>
+                            <Image url="@../../../static/empleados.png" />
+                        </image>
+                    </ImageView>
+                    <VBox>
+                        <Label style="-fx-font-weight: bold;" text="Empleados" />
+                        <Label text="Aprende cómo agregar, editar e inactivar empleados." />
+                    </VBox>
+                </HBox>
+
+                <!-- Categoría: Usuarios -->
+                <HBox spacing="10">
+                    <ImageView fitHeight="32.0" fitWidth="34.0">
+                        <image>
+                            <Image url="@../../../static/usuarios.png" />
+                        </image>
+                    </ImageView>
+                    <VBox>
+                        <Label style="-fx-font-weight: bold;" text="Usuarios" />
+                        <Label text="Gestiona usuarios con distintos roles y permisos." />
+                    </VBox>
+                </HBox>
+
+                <!-- Categoría: Departamentos y Puestos -->
+                <HBox spacing="10">
+                    <ImageView fitHeight="31.0" fitWidth="35.0">
+                        <image>
+                            <Image url="@../../../static/departamento.png" />
+                        </image>
+                    </ImageView>
+                    <VBox>
+                        <Label style="-fx-font-weight: bold;" text="Departamentos y Puestos" />
+                        <Label text="Aprende a crear tus Departamentos y tus Puestos para gestionar a tus empleados" />
+                    </VBox>
+                </HBox>
+
+                <!-- Asistencia y Vacaciones -->
+                <HBox spacing="10">
+                    <ImageView fitHeight="37.0" fitWidth="38.0">
+                        <image>
+                            <Image url="@../../../static/asistencia.png" />
+                        </image>
+                    </ImageView>
+                    <VBox>
+                        <Label style="-fx-font-weight: bold;" text="Asistencia y Vacaciones" />
+                        <Label text="Cómo registrar la asistencia diaria y aprobar vacaciones." />
+                    </VBox>
+                </HBox>
+
+                <!-- Horas extra y anticipos -->
+                <HBox spacing="10">
+                    <ImageView fitHeight="36.0" fitWidth="41.0">
+                        <image>
+                            <Image url="@../../../static/HorasExtra.png" />
+                        </image>
+                    </ImageView>
+                    <VBox>
+                        <Label style="-fx-font-weight: bold;" text="Horas Extra y Anticipos" />
+                        <Label text="Cómo ingresar horas extra y anticipos de manera correcta." />
+                    </VBox>
+                </HBox>
+
+                <!-- Nómina -->
+                <HBox spacing="10">
+                    <ImageView fitHeight="38.0" fitWidth="43.0">
+                        <image>
+                            <Image url="@../../../static/conNomina.png" />
+                        </image>
+                    </ImageView>
+                    <VBox>
+                        <Label style="-fx-font-weight: bold;" text="Cálculo de Nómina" />
+                        <Label text="Paso a paso para generar nómina y aplicar deducciones." />
+                    </VBox>
+                </HBox>
+
+                <!-- Reportes -->
+                <HBox spacing="10">
+                    <ImageView fitHeight="40.0" fitWidth="44.0">
+                        <image>
+                            <Image url="@../../../static/reporteria.png" />
+                        </image>
+                    </ImageView>
+                    <VBox>
+                        <Label style="-fx-font-weight: bold;" text="Reportes y Consultas" />
+                        <Label text="Cómo generar reportes detallados en PDF o Excel." />
+                    </VBox>
+                </HBox>
+            <Hyperlink fx:id="linkdepagina" text="Manual De Usuario" onAction="#abrirGoogle"/>
+
+                <!-- Soporte -->
+                <Label style="-fx-font-weight: bold; -fx-padding: 10 0 0 0;" text="📧 Soporte Técnico:" />
+                <Label text="Email: soporte@sistemadenomina.com" />
+                <Label text="Tel: +502 1234-5678" />
+
+            </VBox>
+        </content>
+    </ScrollPane>
+</AnchorPane>
